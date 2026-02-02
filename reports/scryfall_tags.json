@@ -11,7 +11,6 @@
     },
     {
         "000492bf-7eaa-4939-a51c-4eef74e4c1d1": [
-            "Flametongue Kavu",
             "burn creature",
             "conjure-creature",
             "conjure-named",
@@ -24,7 +23,6 @@
     },
     {
         "0004ebd0-dfd6-4276-b4a6-de0003e94237": [
-            "Stasis",
             "Winter Orb",
             "deprecated untapped artifact",
             "mass land denial",
@@ -71,9 +69,6 @@
         "000d5588-5a4c-434e-988d-396632ade42c": [
             "Aether Swooper",
             "Armored Pegasus",
-            "Attempted Murder",
-            "Colossal Dreadmaw and Storm Crow",
-            "Crow Storm",
             "Erdwal Illuminator",
             "Eyekite",
             "Faerie Duelist",
@@ -81,7 +76,6 @@
             "Flying Dolphin-Fish",
             "Foul Watcher",
             "Hovermyr",
-            "Murmuration",
             "Nightveil Sprite",
             "Oaken Siren",
             "Picklock Prankster // Free the Fae",
@@ -90,7 +84,6 @@
             "Seacoast Drake",
             "Sky Theater Strix",
             "Talas Scout",
-            "Tempest Hawk\nAnnotation: The name is a twist from the often memed Storm Crow.",
             "Tempest Owl",
             "Vivid Flying Fish",
             "Willow Faerie",
@@ -165,7 +158,6 @@
     },
     {
         "00187de2-bc48-4137-97d8-a9a0fafc76c1": [
-            "Etherium Pteramander",
             "Zephyr Sprite",
             "activated ability",
             "cards in graveyard matter",
@@ -239,7 +231,6 @@
     },
     {
         "00268072-af77-40d2-8d2d-c02426575ee1": [
-            "Broodstar",
             "affinity for phyrexians",
             "cda-power",
             "cda-toughness",
@@ -288,7 +279,6 @@
     },
     {
         "002e767c-0b30-4ad1-a924-88da400a4cff": [
-            "Marang River Skeleton",
             "castable from graveyard",
             "cycle-frf-clan-enhanced",
             "reanimate-cast",
@@ -413,7 +403,6 @@
     {
         "004584f8-fd89-4a3e-9782-c117dbe1532b": [
             "Mightstone",
-            "The Mightstone and Weakstone",
             "hate-attacker",
             "mass shrink",
             "virtual legendary"
@@ -647,8 +636,6 @@
     },
     {
         "0071723e-388d-4ae7-bc99-c143dd356c63": [
-            "Goblin Grenade",
-            "Shrapnel Blast",
             "bombard",
             "burn creature",
             "burn planeswalker",
@@ -947,7 +934,6 @@
     },
     {
         "009fcd1e-5c5f-435b-afc1-099f1622e45c": [
-            "Juggernaut",
             "drawback",
             "eponymous",
             "forced attacker",
@@ -985,8 +971,6 @@
             "Legion Conquistador",
             "Royal Falcon",
             "Skyshroud Sentinel",
-            "Suntail Squadron",
-            "Tempest Hawk",
             "Welkin Hawk",
             "cycle-a25-same-name-enhanced",
             "evasion",

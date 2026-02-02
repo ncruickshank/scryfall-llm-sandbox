@@ -69,15 +69,23 @@ class ScryfallTags():
             
         # instantiate browser
         driver = webdriver.Chrome()
-        wait = WebDriverWait(driver, 5)
+        # wait = WebDriverWait(driver, 5)
 
         # iterate through all cards
         data = data[:total_cards] # to limit run time.
         progress_bar = tqdm(len(data))
         card_tags = []
+        processed_cards = 0
         for i in range(len(data)):
             # retrieve card
             card = data[i]
+
+            # perform initial filtration
+            bad_card_types = ['Token', 'Card', 'Conspiracy', 'Emblem', 'Hero', 
+                              'Phenomenon', 'Plane', 'Scheme', 'Stickers', 'Vanguard']
+            for b in bad_card_types:
+                if b in card['type_line'].split(' — ', maxsplit = 1)[0]:
+                    continue # we don't want to extract tags for tokens
 
             # scrape the cards tags
             try:
@@ -92,13 +100,15 @@ class ScryfallTags():
                 # store our
                 card_tags.append(out)
 
-                # update progress bar 
+                # update progress bar and processed_cards
                 progress_bar.update(1)
+                processed_cards += 1
             
             except Exception as e:
                 # print(f'FAILED: {card["name"]} - {e}')
                 # print(f'\tScryfall URI = {card["scryfall_uri"]}')
-                return card['scryfall_uri']
+                # return card['scryfall_uri']
+                continue # move onto the next one
 
 
         # # quit the browser
@@ -106,6 +116,9 @@ class ScryfallTags():
 
         self.data = card_tags 
         del card_tags
+
+        if verbose:
+            print(f'Processed {processed_cards} cards Scryfall tags.')
     
     # === Internal Methods ===
     
@@ -154,7 +167,7 @@ class ScryfallTags():
         tagger_url = tagger_link_elem.get_attribute('href')
 
         # ---------- Step 3: Visit tagger page ----------
-        time.sleep(rate_limit_seconds)
+        # time.sleep(rate_limit_seconds) # not necessary due to our Scryfall > Tagger loop and the first sleep.
         driver.get(tagger_url)
 
         card_container = wait.until(
@@ -168,11 +181,21 @@ class ScryfallTags():
         rows = card_container.find_elements(By.CSS_SELECTOR, 'div.tag-row')
 
         # ---------- Step 4. Extract Tag Names ----------
-        tags = [
-            row.text.strip() 
-            for row in rows 
-            if row.text and row.text.strip()
-        ]
+        # tags = [
+        #     row.text.strip() 
+        #     for row in rows 
+        #     if row.text and row.text.strip()
+        # ]
+        tags = []
+        for row in rows:
+            # skip relation reference rows
+            if row.find_elements(By.CSS_SELECTOR, '.icon-rel-references'):
+                continue
+
+            text = row.text.strip()
+            if text:
+                tags.append(text)
+
         normalized_tags = list(sorted(set(tags)))
         self.cache[card['oracle_id']] = normalized_tags
 
