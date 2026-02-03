@@ -190,4 +190,5 @@ class ScryfallTags():
 
         # store the output
         normalized_tags = list(sorted(set(tags)))
-        self.data[card['oracle_id']] = normalized_tags
+        # self.data[card['oracle_id']] = normalized_tags
+        return normalized_tags
