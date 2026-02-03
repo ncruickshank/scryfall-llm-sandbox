@@ -26,12 +26,8 @@ class ScryfallTags():
     def __init__(self):
         super().__init__()
 
-        # objects to be used for later
-        self.cache = {}
-
-        # objects to be created later
-        self.data = None
-
+        # objects to be filled in iteratively
+        self.data = {}
 
     # === Main Methods ===
 
@@ -144,11 +140,12 @@ class ScryfallTags():
 
         Returns
         ----------
-        normalized_tags = A sorted list of unique tags
+        None, but self.data will be appended with a sorted list of unique tags
+        for the associated card.
         """
         # ---------- Step 1: Cache short-circuit ----------
-        if card['oracle_id'] in self.cache:
-            return self.cache[card['oracle_id']]
+        if card['oracle_id'] in self.data:
+            return self.data[card['oracle_id']]
         
         wait = WebDriverWait(driver, max_load_time)
         
@@ -181,11 +178,6 @@ class ScryfallTags():
         rows = card_container.find_elements(By.CSS_SELECTOR, 'div.tag-row')
 
         # ---------- Step 4. Extract Tag Names ----------
-        # tags = [
-        #     row.text.strip() 
-        #     for row in rows 
-        #     if row.text and row.text.strip()
-        # ]
         tags = []
         for row in rows:
             # skip relation reference rows
@@ -196,7 +188,6 @@ class ScryfallTags():
             if text:
                 tags.append(text)
 
+        # store the output
         normalized_tags = list(sorted(set(tags)))
-        self.cache[card['oracle_id']] = normalized_tags
-
-        return normalized_tags
+        self.data[card['oracle_id']] = normalized_tags
