@@ -123,5 +123,1974 @@
             "removal-nonland",
             "sweeper"
         ]
+    },
+    {
+        "00173df7-a584-410c-af1d-ada9c791056a": [
+            "activated ability",
+            "alliteration",
+            "cycle-woe-draft-signpost",
+            "fun ruling\nAnnotation: Whatever you do, don\u2019t eat the delicious cards",
+            "gives pp counters",
+            "life for cards",
+            "lifegain",
+            "repeatable pure draw",
+            "sacrifice outlet-artifact",
+            "synergy-food",
+            "triggered ability"
+        ]
+    },
+    {
+        "00181784-9213-492a-ba8c-2028969b049e": [
+            "burn any",
+            "cycle-scg-mv-matters",
+            "mana value matters",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "00185f3b-2777-4417-a8e0-4691f41c0ec1": [
+            "Ghost Warden",
+            "activated ability",
+            "anagram\nAnnotation: \"Wyluli\" is an anagram of \"Lily Wu\"",
+            "repeatable crime",
+            "vanity card\nAnnotation: Anagram of Lily Wu, maiden name of creator Richard Garfield's first wife."
+        ]
+    },
+    {
+        "00187de2-bc48-4137-97d8-a9a0fafc76c1": [
+            "Zephyr Sprite",
+            "activated ability",
+            "cards in graveyard matter",
+            "evasion",
+            "gains pp counters",
+            "synergy-instant",
+            "synergy-sorcery",
+            "unique type line"
+        ]
+    },
+    {
+        "0019beff-1528-4131-ae21-9e7a3cf7fbfb": []
+    },
+    {
+        "001c233f-2959-479b-a82a-64a25ac60830": [
+            "Greenweaver Druid",
+            "Palladium Myr",
+            "Sage of the Maze",
+            "activated ability",
+            "adds multiple mana",
+            "mana dork"
+        ]
+    },
+    {
+        "001c6369-df13-427d-89df-718d5c09f382": [
+            "Mischievous Catgeist // Catlike Curiosity\nAnnotation: The cat is easier to cast and has disturb, but the vedalken isn't limited to combat damage",
+            "combat-neutral damage trigger",
+            "curiosity",
+            "draw engine",
+            "pure draw"
+        ]
+    },
+    {
+        "002100cd-1ab1-44da-93a0-1269d47a712a": [
+            "Bitter Chill",
+            "Charmed Sleep",
+            "Claustrophobia",
+            "Mesmerizing Dose",
+            "Starlight Snare",
+            "lockdown-creature",
+            "removal-creature",
+            "spot removal",
+            "tapper-creature",
+            "triggered ability"
+        ]
+    },
+    {
+        "00225c40-27ff-410f-a591-5c788c6a2bd6": [
+            "activated ability",
+            "draw engine",
+            "mana filter",
+            "mana storage",
+            "ramp",
+            "repeatable plunder",
+            "repeatable treasures",
+            "sacrifice outlet-artifact",
+            "sacrifice outlet-creature",
+            "synergy-treasure"
+        ]
+    },
+    {
+        "0023888e-7bec-43e0-8dee-d1a4eb94b372": [
+            "activated ability",
+            "bounce-self",
+            "evasion",
+            "mana sink",
+            "refund",
+            "triggered ability",
+            "untapper-land"
+        ]
+    },
+    {
+        "00268072-af77-40d2-8d2d-c02426575ee1": [
+            "affinity for phyrexians",
+            "cda-power",
+            "cda-toughness",
+            "evasion",
+            "noncreature typal",
+            "typal-phyrexian"
+        ]
+    },
+    {
+        "00284955-0a1b-4939-9567-a7d34cbcee51": [
+            "activated ability",
+            "alliteration",
+            "deprecated legend type",
+            "restock-creature",
+            "restock-to-top"
+        ]
+    },
+    {
+        "002965be-a36f-4a09-9ce0-c6535bca1703": [
+            "Autumn's Veil",
+            "Surge of Salvation",
+            "cantrip",
+            "cycle-m20-enemy-hate",
+            "gives hexproof",
+            "gives player hexproof",
+            "gives uncounterable",
+            "hand-neutral",
+            "hate-black",
+            "hate-blue",
+            "protects-creature"
+        ]
+    },
+    {
+        "002a9cea-8cf7-48ba-83eb-e1c87a7024e5": [
+            "hate-graveyard",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "002ad5fa-a20c-4d30-beef-401d89868d67": [
+            "evasion",
+            "french vanilla",
+            "type addition human"
+        ]
+    },
+    {
+        "002e767c-0b30-4ad1-a924-88da400a4cff": [
+            "castable from graveyard",
+            "cycle-frf-clan-enhanced",
+            "reanimate-cast",
+            "reanimate-self",
+            "synergy-black",
+            "synergy-green",
+            "unblockable"
+        ]
+    },
+    {
+        "00317e4f-0228-469a-9789-fb6c39976860": [
+            "quick enchant",
+            "single target instant/sorcery",
+            "synergy-aura",
+            "theft-aura",
+            "untracked indefinite effect"
+        ]
+    },
+    {
+        "00358a89-2058-448b-a2fd-389f639ba2da": [
+            "synergy-attacker-self",
+            "type errata name self",
+            "unblocked trigger"
+        ]
+    },
+    {
+        "0036d062-10dc-4267-98b4-1d2f6b190a61": [
+            "activated ability",
+            "bottomless mana sink",
+            "evasion",
+            "shade pump"
+        ]
+    },
+    {
+        "00378902-90f3-465a-b917-23c0e81a7400": [
+            "affects dice roll",
+            "drawback",
+            "noncreature typal",
+            "potentially black border",
+            "punny name",
+            "tap fuel-creature",
+            "typal-wall"
+        ]
+    },
+    {
+        "0038e74a-b950-47ff-8853-dba6a3b31091": [
+            "copy-artifact",
+            "copy-creature",
+            "modal",
+            "multiple targets",
+            "namesake-spell",
+            "single target instant/sorcery",
+            "synergy-artifact"
+        ]
+    },
+    {
+        "0039b18c-5b82-4334-b3bd-0232fca57303": []
+    },
+    {
+        "003bf21f-6815-4098-a186-aa15f5947541": [
+            "activated ability",
+            "aikido",
+            "death trigger",
+            "removal-creature",
+            "removal-destroy",
+            "repeatable creature tokens",
+            "repeatable removal",
+            "spot removal"
+        ]
+    },
+    {
+        "003c48d4-0303-4970-8637-47ae060385aa": [
+            "Flower // Flourish\nAnnotation: Flower has a second half, while Safewright Quest can find nonbasic lands",
+            "tutor-land-forest",
+            "tutor-land-plains",
+            "tutor-to-hand"
+        ]
+    },
+    {
+        "003d9c17-5d5c-469f-ad87-d78faf55e025": [
+            "gains pp counters",
+            "landfall",
+            "ramp",
+            "repeatable artifact tokens",
+            "repeatable noncreature tokens",
+            "triggered ability",
+            "tutor-land-basic",
+            "tutor-land-to-battlefield",
+            "uninspired"
+        ]
+    },
+    {
+        "003e5dc6-8b26-4a0a-a50b-5f0806a7bacd": [
+            "death trigger",
+            "group slug",
+            "lifegain matters",
+            "opponent loses life",
+            "repeatable lifegain",
+            "toughness matters"
+        ]
+    },
+    {
+        "0040db73-ac11-4c15-a1ac-5a2c4c085f09": [
+            "alliteration",
+            "cantrip",
+            "gives mm counters",
+            "hand-neutral",
+            "removal-creature",
+            "removal-toughness",
+            "single target instant/sorcery",
+            "spot removal"
+        ]
+    },
+    {
+        "0042a526-8828-40eb-bd32-4f57b230625a": [
+            "unique token"
+        ]
+    },
+    {
+        "0044144e-b848-43c4-b77c-013017b7d5c8": []
+    },
+    {
+        "004584f8-fd89-4a3e-9782-c117dbe1532b": [
+            "Mightstone",
+            "hate-attacker",
+            "mass shrink",
+            "virtual legendary"
+        ]
+    },
+    {
+        "0045c5fa-3229-4050-b139-5712fa24b308": [
+            "evasion",
+            "french vanilla"
+        ]
+    },
+    {
+        "0045cf16-86dd-4417-ae36-88ca63b30c26": [
+            "offcolor additional cost",
+            "power boost to all",
+            "toughness boost to all",
+            "typal-zombie"
+        ]
+    },
+    {
+        "0049438b-e37e-4c57-820e-f2ddf3322170": [
+            "Netcaster Spider",
+            "Skystinger",
+            "block trigger",
+            "hate-flying",
+            "synergy-blocker-self"
+        ]
+    },
+    {
+        "004b2032-0d29-4361-b9c8-a3c0c7b63e2c": [
+            "activated ability",
+            "cycle-un-psychographics",
+            "format matters",
+            "life for cards",
+            "magic term name",
+            "phyrexian mana cost",
+            "unique mana cost",
+            "wish"
+        ]
+    },
+    {
+        "004f82f0-74cc-4bc7-ab22-ab1a5247bc29": [
+            "hand-negative\nAnnotation: -1",
+            "rummage",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "0056e07b-416b-487e-9e6c-3697db402dd4": [
+            "Blade of the Sixth Pride"
+        ]
+    },
+    {
+        "0056fc91-4398-471c-b561-7ff99750ac8a": [
+            "Evolving Wilds",
+            "Rogue's Passage",
+            "Secret Tunnel",
+            "Terramorphic Expanse",
+            "Vibrant Cityscape",
+            "activated ability",
+            "fetchland",
+            "manaless land",
+            "tunneling",
+            "tutor-land-basic",
+            "utility land"
+        ]
+    },
+    {
+        "00571e7f-4e40-4a07-a529-34580e942338": [
+            "alliteration",
+            "bombard",
+            "burn any",
+            "misnomer\nAnnotation: Neither involves the fight mechanic, nor necessarily foods.",
+            "sacrifice outlet-artifact",
+            "scales with multiple",
+            "synergy-artifact"
+        ]
+    },
+    {
+        "00573e77-8ff6-4acb-8683-8827d965288f": [
+            "Armadillo Cloak",
+            "Loxodon Warhammer",
+            "Unflinching Courage",
+            "activated ability",
+            "cycle-arb-allied-equipment",
+            "french vanilla equipment",
+            "gives lifelink",
+            "gives trample",
+            "repeatable lifegain"
+        ]
+    },
+    {
+        "005a8822-73ae-4953-9b46-a485e92df1b3": []
+    },
+    {
+        "005c181a-05db-4c15-9893-65103cca338e": [
+            "alliteration",
+            "cycle-snc-hybrid-legend",
+            "death trigger-self",
+            "discard matters",
+            "gains pp counters",
+            "hate-discard",
+            "loot",
+            "unique mana cost"
+        ]
+    },
+    {
+        "005ee549-1bf5-478f-bc3f-3e791bd7eecf": [
+            "creaturefall",
+            "cycle-c17-kindred-spell",
+            "draw engine",
+            "pure draw",
+            "synergy-attacker",
+            "titan trigger",
+            "typal-choose"
+        ]
+    },
+    {
+        "00602959-e9a1-4706-a1cb-70156a6fc713": [
+            "Alaborn Veteran",
+            "activated ability",
+            "repeatable crime",
+            "type errata summon creature"
+        ]
+    },
+    {
+        "00605b83-faf6-4779-be9d-6a2c8f0ea722": [
+            "alliteration",
+            "banish",
+            "cycle-rix-m-monocolor",
+            "enrage",
+            "removal-creature",
+            "repeatable removal",
+            "spot removal",
+            "triggered ability"
+        ]
+    },
+    {
+        "00606d5e-a134-4363-9ee6-05e03d58f234": [
+            "cycle-inv-domain-spell"
+        ]
+    },
+    {
+        "00625242-9348-4ef4-b975-f2ac82fee21d": [
+            "Canyon Slough",
+            "Cinder Barrens",
+            "Forsaken Sanctuary",
+            "Geothermal Bog",
+            "Nomad Outpost",
+            "Sacred Peaks",
+            "Salt Flats",
+            "Scabland",
+            "Stone Quarry",
+            "Sunlit Marsh",
+            "Urborg Volcano",
+            "activate from hand",
+            "cycle-iko-triome",
+            "hand-neutral",
+            "nonbasic-basic-land-type",
+            "pure draw",
+            "tapland with set's mechanic",
+            "unique type line",
+            "utility land"
+        ]
+    },
+    {
+        "0065fbf9-32bf-4a82-b324-73035c8e5aee": [
+            "unique token"
+        ]
+    },
+    {
+        "0068a341-92a5-470e-a565-9ace69eb04a8": [
+            "activated ability",
+            "bottomless mana sink",
+            "cycle-frf-hybrid-ability",
+            "gains lifelink",
+            "gains pp counters",
+            "gains trample",
+            "offcolor ability",
+            "pseudo-leveler",
+            "repeatable lifegain",
+            "shapechange",
+            "type change",
+            "untracked indefinite effect"
+        ]
+    },
+    {
+        "006bbd8b-2007-419d-8b84-9ff73f2f95b7": [
+            "Rampant Growth",
+            "cycle-rix-typal-revealer",
+            "more expensive than mv",
+            "noncreature typal",
+            "ramp with set's mechanic",
+            "tutor-land-basic",
+            "tutor-land-to-battlefield",
+            "typal-dinosaur"
+        ]
+    },
+    {
+        "006f4a62-8590-4ca0-9f51-3aea26cd1a54": [
+            "power matters",
+            "repeatable creature tokens",
+            "splits on death",
+            "synergy-modified"
+        ]
+    },
+    {
+        "0070db93-142b-4d04-afd3-836792dc134b": [
+            "activated ability",
+            "cycle-tangoland",
+            "lands matter",
+            "nonbasic-basic-land-type",
+            "synergy-basic"
+        ]
+    },
+    {
+        "007161cb-a44b-4443-a53a-dfaacc6cfb86": [
+            "french vanilla",
+            "gains pp counters"
+        ]
+    },
+    {
+        "0071723e-388d-4ae7-bc99-c143dd356c63": [
+            "bombard",
+            "burn creature",
+            "burn planeswalker",
+            "burn player",
+            "burn with set's mechanic",
+            "multi removal",
+            "multiple targets",
+            "noncreature typal",
+            "sacrifice outlet-artifact",
+            "sacrifice outlet-creature",
+            "single target instant/sorcery",
+            "spot removal",
+            "synergy-artifact",
+            "typal-goblin"
+        ]
+    },
+    {
+        "0073d731-e60d-433a-ac35-a22af855da20": [
+            "alliteration",
+            "pair-commander",
+            "synergy-commander",
+            "synergy-dungeon",
+            "trigger doubler"
+        ]
+    },
+    {
+        "00749bad-dded-4fec-bf34-ff14cf561c26": [
+            "cantrip",
+            "hand-neutral",
+            "loot",
+            "loot to library",
+            "synergy-legendary",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "00771a33-7443-43f9-a61e-1737b62b1f81": [
+            "cycle-cn2-draft-signpost",
+            "cycle-ths-draft-signpost",
+            "namesake-spell",
+            "regrowth-creature",
+            "regrowth-enchantment",
+            "synergy-enchantment",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "0077740a-528b-4ee3-b331-fac321b95302": [
+            "discard",
+            "discard with set's mechanic\nAnnotation: Color matters",
+            "hate-color-share",
+            "sacrifice outlet-creature",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "007c110d-4364-41e5-a8bc-6ac05ecbbd00": [
+            "bounce-self",
+            "evasion",
+            "intervening if clause",
+            "repeatable artifact tokens",
+            "repeatable creature tokens"
+        ]
+    },
+    {
+        "007e1815-b2ae-4861-b8c4-b0da8896d718": []
+    },
+    {
+        "007f3b20-d58b-4986-8de8-9e419af88628": [
+            "cycle-one-draft-signpost",
+            "intervening if clause",
+            "removal-creature",
+            "removal-destroy",
+            "removal-planeswalker",
+            "spot removal",
+            "synergy-poison",
+            "virtual french vanilla"
+        ]
+    },
+    {
+        "008011e2-7b82-4962-af6e-be627112f37f": [
+            "Borrowing 100,000 Arrows",
+            "burst draw",
+            "hate-tapped",
+            "pure draw",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "00807825-88e5-4b88-8527-a49f553a91be": [
+            "Romantic Rendezvous",
+            "Wild Guess",
+            "group slug\nAnnotation: via creating a Wicked Role token",
+            "hand-neutral",
+            "opponent loses life",
+            "single target instant/sorcery",
+            "tormenting voice"
+        ]
+    },
+    {
+        "008290c2-499d-425b-9a6c-c4aeb47c33ff": [
+            "Cabal Evangel",
+            "Gutter Skulk",
+            "Krovikan Scoundrel",
+            "Queen's Bay Soldier",
+            "Skeletal Snake",
+            "Walking Corpse",
+            "Wei Infantry"
+        ]
+    },
+    {
+        "008518e1-cc73-448d-94b7-53e40b8e8f21": [
+            "scene"
+        ]
+    },
+    {
+        "00876e98-d062-4a12-85e6-86a2b20cf867": [
+            "cycle-jud-incarnation",
+            "gives trample",
+            "single english word name",
+            "synergy-forest"
+        ]
+    },
+    {
+        "00895741-f94f-4d80-8ca4-c436bf3c8d56": [
+            "attack trigger",
+            "synergy-attacker-self"
+        ]
+    },
+    {
+        "0089b07c-7f47-4a9a-9fb7-cc38ec9d7bcd": [
+            "cycle-khm-legendary-signpost",
+            "evasion",
+            "impulse-creature-elf",
+            "impulse-creature-warrior",
+            "impulse-pw-tyvar",
+            "noncreature typal",
+            "synergy-pw-tyvar",
+            "triggered ability",
+            "typal coupling",
+            "typal-elf",
+            "typal-warrior",
+            "virtual french vanilla"
+        ]
+    },
+    {
+        "008ac258-763c-4379-bfcd-b9cc4d7296dd": [
+            "cycle-lgn-r-sliver",
+            "gives tap ability",
+            "noncreature typal",
+            "typal-sliver"
+        ]
+    },
+    {
+        "008c92bc-3022-4d34-aa04-584576ff8f8e": [
+            "Command the Storm",
+            "Fiery Finish",
+            "activate from hand",
+            "burn creature",
+            "burn with set's mechanic",
+            "cheaper than mv",
+            "cycle-akh-cycle-effect",
+            "hand-neutral",
+            "pure draw",
+            "single target instant/sorcery",
+            "spot removal",
+            "triggered ability"
+        ]
+    },
+    {
+        "008cb342-79f5-4df6-a6b7-0e9e22ed693f": [
+            "Component Pouch",
+            "Manalith",
+            "activated ability",
+            "adds multiple mana",
+            "mana rock",
+            "mana storage",
+            "refund",
+            "triggered ability"
+        ]
+    },
+    {
+        "008d5896-6fc9-4aaa-8c6f-a44c2feb98bb": [
+            "delayed trigger",
+            "flicker-creature",
+            "flicker-slow",
+            "hate-attacker",
+            "hate-blocker",
+            "homeward effect",
+            "synergy-attacker",
+            "synergy-blocker",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "008eda1f-b913-4f04-8c29-5e87c270149e": [
+            "activated ability",
+            "alliteration",
+            "discard matters",
+            "draw engine",
+            "group slug",
+            "hand size hate",
+            "hellbent",
+            "intervening if clause",
+            "life for cards",
+            "opponent loses life",
+            "opponent-discard matters",
+            "pure draw",
+            "toll"
+        ]
+    },
+    {
+        "008f2698-1721-45a3-8353-10f2f400dc8f": [
+            "activated ability",
+            "alliteration",
+            "cycle-chk-legendary-land",
+            "gives fear",
+            "repeatable crime",
+            "synergy-legendary",
+            "utility land"
+        ]
+    },
+    {
+        "00909d51-3da8-41eb-a535-0c325fedc59f": [
+            "activate from graveyard",
+            "alliteration",
+            "multiple bodies",
+            "noncreature typal",
+            "out of color token",
+            "regrowth-self",
+            "repeatable creature tokens",
+            "tap fuel-creature",
+            "typal-merfolk"
+        ]
+    },
+    {
+        "00915480-ffa8-4930-a158-b1c1f75b7876": [
+            "impulse-creature-human",
+            "noncreature typal",
+            "triggered ability",
+            "typal-human",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "009240f3-b7f8-4cbe-a3e9-974da66fb62c": [
+            "Monastery Swiftspear",
+            "alliteration",
+            "cast trigger-you",
+            "gives mm counters",
+            "synergy-burn",
+            "synergy-noncreature"
+        ]
+    },
+    {
+        "009a399b-c78e-475b-8bc3-7db2afc9d676": [
+            "alliteration",
+            "evasion",
+            "intervening if clause",
+            "leaves battlefield trigger",
+            "lifegain",
+            "revolt",
+            "virtual french vanilla"
+        ]
+    },
+    {
+        "009a4073-5946-4131-928c-c5c373745344": [
+            "activated ability",
+            "alliteration",
+            "animate self",
+            "copy-creature",
+            "evasion",
+            "tap fuel-creature",
+            "triggered ability"
+        ]
+    },
+    {
+        "009a8e38-74d0-4b4a-b8ca-62c9f3183531": [
+            "Enormous Baloth"
+        ]
+    },
+    {
+        "009e1638-9055-4872-93e1-85841bce4648": [
+            "Cackling Fiend",
+            "affinity for artifacts",
+            "cantrip",
+            "discard",
+            "evasion",
+            "triggered ability",
+            "unique type line",
+            "virtual french vanilla"
+        ]
+    },
+    {
+        "009fcd1e-5c5f-435b-afc1-099f1622e45c": [
+            "drawback",
+            "eponymous",
+            "forced attacker",
+            "gives mm counters",
+            "poisonous",
+            "type addition phyrexian",
+            "unique type line"
+        ]
+    },
+    {
+        "00a15abc-bdac-4977-90a0-f08d41941d01": [
+            "creaturefall",
+            "cycle-eld-court-leader",
+            "gains pp counters",
+            "power matters",
+            "synergy-green",
+            "triggered ability"
+        ]
+    },
+    {
+        "00a9bdd0-8a39-4489-bd42-2ac92e550781": [
+            "Indentured Oaf",
+            "Mire Kavu",
+            "Ogre Taskmaster",
+            "attack trigger",
+            "prevent blocker",
+            "reflexive trigger",
+            "synergy-attacker-self"
+        ]
+    },
+    {
+        "00ab9841-934f-4a66-a98d-68d01661b1c9": [
+            "Battalion Foot Soldier",
+            "Howling Wolf",
+            "Legion Conquistador",
+            "Royal Falcon",
+            "Skyshroud Sentinel",
+            "Welkin Hawk",
+            "cycle-a25-same-name-enhanced",
+            "evasion",
+            "triggered ability",
+            "tutor-self",
+            "tutor-to-hand",
+            "virtual french vanilla",
+            "weaker in singleton formats"
+        ]
+    },
+    {
+        "00abb43b-550f-42d2-9049-61ac56ff5d8d": [
+            "cycle-block-rav-c-hybrid",
+            "french vanilla"
+        ]
+    },
+    {
+        "00ad27a1-9162-408d-ac75-970e45d7e06c": [
+            "activated ability",
+            "free discard outlet",
+            "hellbending",
+            "regenerates self",
+            "type addition from none"
+        ]
+    },
+    {
+        "00af96af-5eae-4044-a2f7-a08cd0699d1e": [
+            "Ravaging Horde",
+            "removal-destroy",
+            "removal-land",
+            "spot removal",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "00afc724-be09-4e92-a50c-88011bd10ccd": [
+            "Savage Punch",
+            "alliteration",
+            "cycle-ths-self-hate",
+            "hate-green",
+            "multiple targets",
+            "removal-fight",
+            "synergy-green"
+        ]
+    },
+    {
+        "00b266f8-10db-4778-b865-4189b1ab4d30": [
+            "french vanilla"
+        ]
+    },
+    {
+        "00b34fab-5a80-4a4d-b6cf-72479197677a": [
+            "Bleeding Woods",
+            "Bristling Backwoods",
+            "Cinder Glade",
+            "City of Ass",
+            "Cliffgate",
+            "Copperline Gorge",
+            "Cryptic Spires",
+            "Dining Room",
+            "Frontier Bivouac",
+            "Game Trail",
+            "Gruul Guildgate",
+            "Highland Weald",
+            "Jungle Shrine",
+            "Kazandu Refuge",
+            "Ketria Triome",
+            "Racers' Ring",
+            "Raging Ravine",
+            "Rootbound Crag",
+            "Rugged Highlands",
+            "Savage Lands",
+            "Shivan Oasis",
+            "Spire Garden",
+            "Stomping Ground",
+            "Stump Stomp // Burnwillow Clearing",
+            "Taiga Stadium",
+            "Temple of Abandon",
+            "Thriving Bluff",
+            "Thriving Grove",
+            "activated ability",
+            "cycle-ogw-tapland"
+        ]
+    },
+    {
+        "00b36996-43c6-42a5-892c-c7c8864cf973": [
+            "Acrobatic Maneuver",
+            "Scrollshift",
+            "cantrip",
+            "dnd spell",
+            "flicker-creature",
+            "hand-neutral",
+            "protects-creature",
+            "single english word name",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "00b3971b-5bf7-4a3f-9607-6265f9af9098": [
+            "activated ability",
+            "alliteration",
+            "hate-graveyard",
+            "hate-set-mechanic",
+            "martyr"
+        ]
+    },
+    {
+        "00b50215-e832-417f-9c80-2bc3050b6ebb": [
+            "alliteration",
+            "anthem",
+            "lifegain",
+            "multiple race types",
+            "power boost to all",
+            "toughness boost to all",
+            "triggered ability",
+            "typal coupling",
+            "typal-bat",
+            "typal-bear",
+            "typal-bird",
+            "typal-boar",
+            "typal-cat",
+            "typal-dog",
+            "typal-frog",
+            "typal-jackal",
+            "typal-lizard",
+            "typal-mouse",
+            "typal-otter",
+            "typal-rabbit",
+            "typal-raccoon",
+            "typal-rat",
+            "typal-spider",
+            "typal-squirrel",
+            "typal-turtle",
+            "typal-wolf",
+            "unique type line"
+        ]
+    },
+    {
+        "00b9d3a3-fd64-4757-9159-b3af06b5f5b1": [
+            "activated ability",
+            "bottomless mana sink",
+            "firebreathing",
+            "gives haste",
+            "group slug",
+            "opponent loses life",
+            "power boost to all",
+            "threaten",
+            "triggered ability",
+            "untapper-creature"
+        ]
+    },
+    {
+        "00ba0c24-a671-493e-ba46-13e45d1818f1": [
+            "Akroan Sergeant",
+            "Blood Ogre",
+            "Goblin Brawler",
+            "Goblin Secret Agent",
+            "Kessig Wolf",
+            "Orcish Veteran",
+            "Sabretooth Tiger",
+            "Splatter Thug",
+            "Viashino Spearhunter",
+            "attack trigger",
+            "cast on resolution",
+            "cast trigger-you",
+            "gives castable from graveyard",
+            "mana value matters",
+            "reflexive trigger",
+            "synergy-attacker-self",
+            "synergy-instant",
+            "synergy-sorcery"
+        ]
+    },
+    {
+        "00ba96e0-42a7-432a-a500-5e607d75a358": [
+            "alliteration",
+            "attack trigger",
+            "evasion",
+            "removes flying",
+            "shrink",
+            "synergy-attacker-self"
+        ]
+    },
+    {
+        "00bc1215-553d-40ae-b0e6-681b2d289a0a": [
+            "fun ruling\nAnnotation: \" If you can figure out what the milk counters are for, let me know.\"",
+            "guest designer\nAnnotation: Was orginally created by Sungwon Cho, known as \"ProZD\", in his card game skits, before being referenced in Mystery Booster 2.",
+            "meme\nAnnotation: Based on a ProZD video that used made-up Magic cards such as this one.",
+            "noncreature typal",
+            "potentially black border",
+            "synergy-forest",
+            "typal-plant",
+            "unique keyword",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "00bc99d9-2cc4-4dd5-a37b-4918fff8160a": [
+            "anthem",
+            "power boost to all",
+            "squad token",
+            "toughness boost to all"
+        ]
+    },
+    {
+        "00bcada7-9028-4919-8de2-ddb74c1c7ef8": [
+            "noncreature typal",
+            "punny name",
+            "tap fuel-creature",
+            "triggered ability",
+            "typal-bear",
+            "unique type line",
+            "unprinted token",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "00bcbeb5-196a-4a54-ac8d-dec708e68d01": [
+            "dnd mechanic\nAnnotation: Oath of Devotion paladin subclass",
+            "gives vigilance",
+            "power boost to all",
+            "toughness boost to all",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "00bcfbaf-cd31-4688-973e-4238749051b7": [
+            "activated ability",
+            "cycle-ktk-enemy-ability",
+            "gains first strike",
+            "offcolor ability"
+        ]
+    },
+    {
+        "00bf8c3b-40d0-4c27-ae60-7c2743435099": []
+    },
+    {
+        "00bf9859-d5bf-455a-a4be-965ea4250c7e": [
+            "force attacker",
+            "gives haste",
+            "gives menace",
+            "intervening if clause",
+            "multiplayer",
+            "prevent blocker",
+            "synergy-goad",
+            "synergy-suspect",
+            "theft-mass",
+            "threaten",
+            "untapper-creature"
+        ]
+    },
+    {
+        "00c0543c-2a1f-4425-8283-4062d74a1637": [
+            "Scampering Surveyor",
+            "alliteration",
+            "death trigger-self",
+            "invitational card",
+            "pure draw",
+            "ramp",
+            "tutor-land-basic",
+            "tutor-land-to-battlefield",
+            "type addition from none"
+        ]
+    },
+    {
+        "00c1788d-c52f-4839-9cd8-11fb86c418b6": [
+            "activated ability",
+            "cast trigger-you",
+            "cycle-blb-r-talent",
+            "out of color token",
+            "regrowth-instant",
+            "regrowth-sorcery",
+            "synergy-noncreature\nAnnotation: Prowess Otters",
+            "young pyromancer ability"
+        ]
+    },
+    {
+        "00c31b71-9bd3-4ac6-9efe-c05d56d18b91": [
+            "gives haste",
+            "power boost to all",
+            "team matters\nAnnotation: The team you're on impacts this card."
+        ]
+    },
+    {
+        "00cb93a8-5d33-4c6a-9e2a-4b3560f76f3f": [
+            "cheat death",
+            "death trigger",
+            "regrowth-creature"
+        ]
+    },
+    {
+        "00cd3bf9-0dd6-4ec0-a841-1839a71604ab": [
+            "activated ability",
+            "burst draw",
+            "hand-positive\nAnnotation: +2",
+            "mana egg",
+            "offcolor ability",
+            "out of color token",
+            "pure draw",
+            "triggered ability"
+        ]
+    },
+    {
+        "00cfbea0-e862-468b-90d5-7478eb9847c0": [
+            "aikido",
+            "alliteration",
+            "burn creature",
+            "death trigger",
+            "delayed trigger",
+            "impulsive draw",
+            "power matters",
+            "spot removal"
+        ]
+    },
+    {
+        "00d11662-9d10-4915-b80c-c1ad54b4e71b": [
+            "activated ability",
+            "dnd mechanic",
+            "multiple race types",
+            "repeatable crime",
+            "tapper-creature",
+            "unique type line"
+        ]
+    },
+    {
+        "00d1596a-c3e2-4109-86da-388934a0c652": [
+            "Sterling Keykeeper",
+            "activated ability",
+            "repeatable crime",
+            "tapper-creature"
+        ]
+    },
+    {
+        "00d3fcdf-6959-4437-9bad-93a8625510a1": [
+            "gains intimidate"
+        ]
+    },
+    {
+        "00d8efa6-a2d9-4249-8da7-b45173675329": [
+            "Wild Growth",
+            "mana increaser",
+            "synergy-forest",
+            "triggered ability",
+            "uninspired"
+        ]
+    },
+    {
+        "00dc52aa-22b3-4906-9da9-18586ef683d5": [
+            "front-card"
+        ]
+    },
+    {
+        "00ddbb94-5ccd-488f-b0cf-1726d8324621": [
+            "activated ability",
+            "filterland",
+            "mana sink",
+            "ramp",
+            "repeatable powerstones",
+            "utility land"
+        ]
+    },
+    {
+        "00de57d2-7cb6-4337-9bc6-f6711e4dfabf": [
+            "Shivan Oasis",
+            "Taiga",
+            "Timber Gorge",
+            "activated ability",
+            "cycle-soi-reveal-land",
+            "synergy-forest",
+            "synergy-mountain"
+        ]
+    },
+    {
+        "00e0b103-892c-49b3-836d-867fff197bbd": [
+            "cycle-shm-r-persist",
+            "delayed trigger",
+            "evasion",
+            "gives haste",
+            "persist",
+            "reanimate-creature",
+            "reanimate-from-opponent",
+            "temporary reanimation",
+            "theft-creature",
+            "untracked indefinite effect",
+            "virtual french vanilla"
+        ]
+    },
+    {
+        "00e25126-b807-4753-ba63-9a533755e5ce": [
+            "Bonder's Ornament",
+            "Manalith",
+            "Seer's Lantern",
+            "activated ability",
+            "dnd item",
+            "extra land",
+            "impulse-land",
+            "impulse-onto-battlefield",
+            "refund",
+            "repeatable impulse",
+            "scry like",
+            "utility mana rock"
+        ]
+    },
+    {
+        "00e35322-1a9a-41e3-9ce1-359c8eaa3bc7": [
+            "activated ability",
+            "cycle-mrd-talisman",
+            "mana ability with extra effect",
+            "mana rock",
+            "refund"
+        ]
+    },
+    {
+        "00e36265-0cd8-4084-adf5-d1ed44f0d689": [
+            "burn creature",
+            "burn with set's mechanic\nAnnotation: Graveyard matters",
+            "graveyard fuel",
+            "single target instant/sorcery",
+            "spot removal"
+        ]
+    },
+    {
+        "00e6808c-1f9e-4b6a-807c-83f433b81a41": [
+            "activated ability",
+            "discard outlet-last drawn",
+            "repeatable loot",
+            "repeatable rummage",
+            "synergy-black",
+            "type addition human",
+            "type addition sorcerer"
+        ]
+    },
+    {
+        "00e8b4c9-3a79-4864-a730-c0081d397c5b": [
+            "Air Elemental",
+            "Chaos Wand",
+            "cast on resolution",
+            "consult-cast",
+            "evasion",
+            "free-cast-another",
+            "hate-instant",
+            "hate-sorcery",
+            "nightveil theft",
+            "theft-cast",
+            "triggered ability"
+        ]
+    },
+    {
+        "00e9957a-5684-4a07-954e-8161925fefe4": [
+            "cycle-war-bond",
+            "gives lifelink",
+            "tapper-creature"
+        ]
+    },
+    {
+        "00e9c357-5d0b-45cc-a5fd-70ac1f327d28": [
+            "gives unblockable",
+            "hate-artifact",
+            "hate-artifact-land",
+            "hate-set-mechanic"
+        ]
+    },
+    {
+        "00ef1c55-dea1-4564-bd57-66de86cba4df": [
+            "activated ability",
+            "alliteration",
+            "cycle-rav-bounceland",
+            "triggered ability"
+        ]
+    },
+    {
+        "00efb113-ba5a-4749-b42b-5693b980f26f": [
+            "Champion Lancer",
+            "Dark Hatchling",
+            "mirrored knight",
+            "removal-creature",
+            "removal-destroy",
+            "spot removal",
+            "triggered ability",
+            "type addition human",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "00f00001-bd84-4dbf-a707-f4b1549100d4": [
+            "buttfight",
+            "gives pp counters",
+            "triggered ability"
+        ]
+    },
+    {
+        "00f1d167-c143-471d-bd52-da2a65d087c4": [
+            "gives pp counters",
+            "gives reach",
+            "reach counter",
+            "renew"
+        ]
+    },
+    {
+        "00f579f4-2d18-4c7c-91b2-34726b384535": [
+            "activated ability",
+            "cycle-mbs-color-artifact",
+            "gains vigilance"
+        ]
+    },
+    {
+        "00f82f84-81a5-45e5-9c35-9d627a180950": [
+            "New Frontiers",
+            "cycle-cmd-join-forces",
+            "donate rampant growth",
+            "group hug",
+            "multiplayer",
+            "ramp with set's mechanic",
+            "symmetrical",
+            "tutor-land-basic",
+            "tutor-land-to-battlefield"
+        ]
+    },
+    {
+        "00fc773a-72aa-4b58-a17c-8ac0f17c4c85": [
+            "activated ability",
+            "gains flying",
+            "jump",
+            "life payment"
+        ]
+    },
+    {
+        "00fc8d67-3df7-419a-9186-f05eb5cccb29": []
+    },
+    {
+        "00fdcc19-88ed-46c3-91f0-095806228105": [
+            "Bone Miser",
+            "adds multiple mana",
+            "discard matters",
+            "discarded type matters",
+            "draw engine",
+            "non mana ability mana",
+            "opponent-discard matters",
+            "ramp",
+            "repeatable creature tokens",
+            "repeatable pure draw",
+            "triggered ability",
+            "you make the card"
+        ]
+    },
+    {
+        "00ff5598-2f7f-4e28-8b63-5ae1ce18f0c5": [
+            "Fell Stinger",
+            "Sign in Blood",
+            "castable from exile",
+            "exile-self",
+            "hand-positive\nAnnotation: +1",
+            "life for cards",
+            "opponent loses life",
+            "plunder",
+            "reflexive trigger",
+            "sacrifice outlet-creature",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "01003192-8927-4e55-8dd9-e9e088a3fbe4": [
+            "burst draw",
+            "counterspell-soft",
+            "hand-positive",
+            "more expensive than mv",
+            "pure draw",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "0101f891-e54c-43e5-86f3-263d95060fcd": [
+            "Cerulean Wisps",
+            "Pressure Point",
+            "cantrip",
+            "hand-neutral",
+            "single english word name",
+            "single target instant/sorcery",
+            "untapper-creature"
+        ]
+    },
+    {
+        "0103b2f2-05dd-40af-954d-303c144edb04": [
+            "activated ability",
+            "bottomless mana sink",
+            "regenerates self",
+            "shade pump",
+            "type errata"
+        ]
+    },
+    {
+        "0103cd34-9ce5-4569-9e6f-c583b58f555c": []
+    },
+    {
+        "01072a45-ab1c-4d19-b493-76cf4aae351e": [
+            "discard hand",
+            "discard outlet",
+            "single english word name",
+            "tmp-storyline-in-cards",
+            "triggered ability"
+        ]
+    },
+    {
+        "01076e04-3106-4968-8ef4-b26fc3786699": [
+            "activated ability",
+            "delayed trigger",
+            "sneak-planeswalker",
+            "synergy-planeswalker"
+        ]
+    },
+    {
+        "01081f81-f588-43ab-8d47-13593aa19ce1": [
+            "attack trigger",
+            "awaken",
+            "delayed trigger",
+            "gives lifelink",
+            "more expensive than mv",
+            "single target instant/sorcery\nAnnotation: via Awaken",
+            "synergy-attacker"
+        ]
+    },
+    {
+        "010b22f5-ea2f-4de2-b8b9-0439347a61d0": [
+            "Singing Bell Strike",
+            "lockdown-creature",
+            "removal-creature",
+            "repeatable removal",
+            "single target instant/sorcery",
+            "tapper-creature",
+            "untapper-creature"
+        ]
+    },
+    {
+        "010c660a-a67b-48f0-a63a-15470eb89f69": [
+            "Battlewing Mystic",
+            "Dimensional Infiltrator",
+            "Novellamental",
+            "Plumecreed Escort",
+            "Rattlechains",
+            "Shacklegeist",
+            "Skyship Plunderer",
+            "Spectral Adversary",
+            "Stormchaser Drake",
+            "Stratus Dancer",
+            "Tattered Haunter",
+            "Thieving Skydiver",
+            "Thunderclap Drake",
+            "Vaporkin",
+            "Warkite Marauder",
+            "Zephyr Sentinel",
+            "Zephyr Winder",
+            "high flying"
+        ]
+    },
+    {
+        "010e0d5c-e751-4f67-b305-8a598cc1f0de": [
+            "cycle-ody-land-aura",
+            "discard outlet",
+            "theft-creature",
+            "threaten"
+        ]
+    },
+    {
+        "010ec11a-0484-486d-b7c0-de65593bf457": [
+            "Dutiful Return",
+            "Macabre Reconstruction",
+            "March of the Returned",
+            "Wander in Death",
+            "discount-self",
+            "hand-positive\nAnnotation: +1",
+            "lifegain matters",
+            "multiple targets",
+            "regrowth-creature",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "010ecf58-a91b-439e-977f-5d8f7fca5046": []
+    },
+    {
+        "011371f0-a7f1-47a5-9883-22a14cfe4de9": [
+            "activated ability",
+            "cast trigger-you",
+            "cycle-eve-hatchling",
+            "cycle-mm2-draft-signpost",
+            "drawback",
+            "gains mm counters",
+            "prevent blocker",
+            "removes-mm-counters-self",
+            "synergy-blue",
+            "synergy-red"
+        ]
+    },
+    {
+        "0114f97f-b196-4af1-90aa-eba164cb8f22": [
+            "Circle of Despair",
+            "activated ability",
+            "anthem",
+            "combat trick",
+            "cycle-mh1-draft-signpost",
+            "gives indestructible",
+            "power boost to all",
+            "protects-creature",
+            "sacrifice outlet-creature",
+            "toughness boost to all",
+            "typal-choose"
+        ]
+    },
+    {
+        "011558f3-3c23-430e-a08b-8f91238e7971": [
+            "Impale",
+            "more expensive than mv",
+            "out of color token",
+            "removal-creature",
+            "removal-destroy",
+            "single target instant/sorcery",
+            "spot removal",
+            "spree"
+        ]
+    },
+    {
+        "01160cb5-6d83-4317-9522-74083b3a83bb": [
+            "confluence",
+            "flicker-nonland",
+            "flowstone",
+            "homeward effect",
+            "multi removal",
+            "multiple targets",
+            "protects-nonland",
+            "ramp",
+            "refund",
+            "removal-creature",
+            "removal-toughness",
+            "single target instant/sorcery",
+            "spot removal"
+        ]
+    },
+    {
+        "01197456-62f1-4bc0-9f2f-127f97f9b05d": [
+            "cheaper than mv",
+            "gives unblockable",
+            "ninjutsu",
+            "noncreature typal",
+            "saboteur",
+            "synergy-attacker",
+            "triggered ability",
+            "tutor-creature-ninja",
+            "tutor-to-hand",
+            "typal-ninja"
+        ]
+    },
+    {
+        "011af4c1-e8ed-44bf-b7b5-dfdc18524cd0": [
+            "cycle-war-u-two-color-spell",
+            "discard hand",
+            "discard outlet",
+            "hand size matters",
+            "hand-neutral",
+            "lifegain",
+            "wheel"
+        ]
+    },
+    {
+        "011b2243-b8be-471f-9d8f-824a40e599df": [
+            "evasion",
+            "french vanilla"
+        ]
+    },
+    {
+        "011bb6cc-f1a1-4790-befc-373acabf63b8": [
+            "Forked Bolt",
+            "activated ability",
+            "burn any",
+            "discard outlet",
+            "multi removal",
+            "multiple targets",
+            "pinger",
+            "repeatable crime",
+            "repeatable removal",
+            "type addition human"
+        ]
+    },
+    {
+        "011d4f47-c6fd-434b-98f2-2f558fbff40b": [
+            "Multani's Decree",
+            "hate-enchantment",
+            "lifegain",
+            "removal-artifact",
+            "removal-destroy",
+            "removal-enchantment",
+            "sweeper"
+        ]
+    },
+    {
+        "011ff7a5-6bce-4784-a19b-e74f7b49b8f1": [
+            "Elixir of Immortality",
+            "Farmstead",
+            "Tanglebloom",
+            "activated ability",
+            "commander tax evasion",
+            "exile-self",
+            "regrowth",
+            "repeatable lifegain",
+            "restock-all",
+            "single english word name",
+            "synergy-commander"
+        ]
+    },
+    {
+        "0123221f-c9a6-4509-8c10-eca9d40ddea8": []
+    },
+    {
+        "0123b162-0413-4022-acc0-e5bd061d3fb4": [
+            "Chromatic Lantern",
+            "Harvest Mage",
+            "Rain of Filth",
+            "gives mana ability",
+            "mana fix"
+        ]
+    },
+    {
+        "01245075-1080-4ca1-82ef-0b2639068657": []
+    },
+    {
+        "0124977f-06e6-430a-a874-f7d05883a97c": [
+            "Flameshadow Conjuring",
+            "Mirror March",
+            "copy-creature",
+            "creaturefall",
+            "repeatable creature tokens",
+            "temporary token",
+            "triggered ability"
+        ]
+    },
+    {
+        "0126f620-1dbf-405c-b5cf-f48b7ef02d32": [
+            "activated ability",
+            "bottomless mana sink",
+            "evasion",
+            "firebreathing"
+        ]
+    },
+    {
+        "0127c13f-7b0f-44c3-8b35-97f306c5f239": [
+            "opponent chooses",
+            "removal-creature",
+            "removal-exile",
+            "removal-sacrifice",
+            "single target instant/sorcery",
+            "spot removal",
+            "sweeper-graveyard"
+        ]
+    },
+    {
+        "01294ac9-1a06-4ee8-b3b1-db1f07c9d94e": [
+            "burst draw",
+            "cycle-ala-shard-ultimatum",
+            "cycle-mm3-r-tricolor",
+            "discard",
+            "drain life",
+            "fun ruling\nAnnotation: \"(I'm not going to list them all here because it would just be disappointing to hear all of the things you won't get to do.) \"",
+            "hand-positive",
+            "opponent loses life",
+            "pure draw",
+            "regrowth-creature",
+            "removal-creature",
+            "removal-sacrifice",
+            "single target instant/sorcery",
+            "spot removal",
+            "unique mana cost"
+        ]
+    },
+    {
+        "0129ffe2-389f-4e05-8a04-96461bac39a5": [
+            "delayed trigger",
+            "gives haste",
+            "reanimate-vehicle",
+            "synergy-vehicle",
+            "unique type line"
+        ]
+    },
+    {
+        "012c665c-24b1-49d6-b575-2b4ee1c3a833": [
+            "activated ability",
+            "mill-exile",
+            "mill-self"
+        ]
+    },
+    {
+        "01317d6c-8c11-40e1-8f7b-d36050973ada": [
+            "Dawn Gryff",
+            "Ghirapur Osprey",
+            "cost-reducer-artifact",
+            "cost-reducer-enchantment",
+            "evasion"
+        ]
+    },
+    {
+        "0131d2ac-d677-45fd-9729-a5428139cb5b": [
+            "creaturefall",
+            "cycle-scg-dragon-aura",
+            "gives trample",
+            "mana value matters",
+            "reanimate-self",
+            "trigger from graveyard"
+        ]
+    },
+    {
+        "01376449-5cd2-4079-8aaa-5128634ef20b": [
+            "alliteration",
+            "cast trigger-you",
+            "cycle-ltr-u-saga",
+            "delayed trigger",
+            "gives pp counters",
+            "intervening if clause",
+            "noted tracked information",
+            "typal-choose",
+            "typal-non-share"
+        ]
+    },
+    {
+        "013a465b-7034-45fe-bf62-c3d273131ec5": [
+            "cycle-stx-c-hybrid-spell",
+            "mathy name",
+            "punny name",
+            "shapechange",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "013bcab8-e527-4700-82c9-4cb9cb8a4807": [
+            "Brinebarrow Intruder",
+            "Cogwork Wrestler",
+            "combat trick",
+            "shrink",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "013c42a4-d555-46c9-9d57-b50d6b59ae9e": [
+            "Bandage",
+            "damage prevention",
+            "delayed cantrip",
+            "hand-neutral",
+            "single english word name",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "013ca531-1ff7-4efc-a280-4bc3ab574072": [
+            "Goblin Electromancer",
+            "cost-reducer-instant-sorcery",
+            "evasion"
+        ]
+    },
+    {
+        "013e4281-4e3e-47c2-ac9a-f570668bcb16": [
+            "Gaea's Skyfolk",
+            "activated ability",
+            "cycle-eld-u-two-color",
+            "evasion",
+            "mana dork"
+        ]
+    },
+    {
+        "0140cf53-71ef-4d37-9197-48aab35ca4a2": [
+            "Borrowed Hostility",
+            "Brute Force",
+            "Felonious Rage",
+            "Fever Charm",
+            "Free from Flesh",
+            "Huatli's Spurring",
+            "Infuriate",
+            "Inventor's Axe",
+            "Monstrous Rage",
+            "Rimrock Knight // Boulder Rush",
+            "Rouse the Mob",
+            "Rush of Adrenaline",
+            "Samut's Sprint",
+            "Titan's Strength",
+            "Turn Inside Out",
+            "combat trick",
+            "single target instant/sorcery",
+            "sports name\nAnnotation: bull rush is a common pass rushing move for defensive linemen in American football."
+        ]
+    },
+    {
+        "01432542-2ea7-45bc-bc90-151516faee0e": [
+            "40k model",
+            "Sharding Sphinx",
+            "Zeriam, Golden Wind",
+            "evasion",
+            "exponential",
+            "repeatable creature tokens",
+            "rhystic",
+            "saboteur",
+            "triggered ability",
+            "typal-tyranid"
+        ]
+    },
+    {
+        "01443d75-3f86-45c0-81fa-fbf1b3175d4f": [
+            "cast trigger-you",
+            "gains intimidate",
+            "heroic"
+        ]
+    },
+    {
+        "0144d9bb-d3cb-4c23-b133-6653d7c3a76d": [
+            "cantrip",
+            "counterspell with set mechanic\nAnnotation: Graveyard matters",
+            "counterspell-soft",
+            "hand-neutral",
+            "hate-set-mechanic",
+            "punisher",
+            "single target instant/sorcery",
+            "sweeper-graveyard"
+        ]
+    },
+    {
+        "0146de73-29bf-415a-b450-11074553f715": [
+            "alliteration",
+            "counterspell-creature",
+            "counterspell-enchantment",
+            "counterspell-exile",
+            "self-replacement effect",
+            "single target instant/sorcery"
+        ]
+    },
+    {
+        "0146f430-da82-48d3-a576-c2b05101797f": [
+            "Arashin Cleric",
+            "Enlightened Ascetic",
+            "Temple Acolyte",
+            "hate-graveyard",
+            "lifegain",
+            "removal-destroy",
+            "removal-enchantment",
+            "spot removal",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "01485a54-8b1e-48f2-a1fb-60875c36c251": []
+    },
+    {
+        "01499544-6850-49f0-a66e-113df19c4340": [
+            "Affectionate Indrik",
+            "alliteration",
+            "removal-fight",
+            "triggered ability",
+            "virtual vanilla"
+        ]
+    },
+    {
+        "014c94d8-2c39-4d33-902b-fa2398406fd5": [
+            "activated ability",
+            "alliteration",
+            "cycle-mrd-spellbomb",
+            "egg",
+            "lifegain",
+            "pure draw"
+        ]
+    },
+    {
+        "014ca38f-d4ac-4417-bfa8-785a7d6fce43": [
+            "block trigger",
+            "delayed trigger",
+            "drawback",
+            "evasion"
+        ]
+    },
+    {
+        "014d00fc-434a-4b06-84b2-afd930677d61": [
+            "Blade of the Sixth Pride",
+            "Cliffhaven Sell-Sword",
+            "Devilthorn Fox",
+            "Dromoka Warrior",
+            "Knight of New Benalia",
+            "Prowling Caracal",
+            "Raptor Companion",
+            "Savai Sabertooth"
+        ]
+    },
+    {
+        "015004d7-989b-4549-9ffa-b062126d04d2": [
+            "activated ability",
+            "graveyard fuel-self",
+            "scry",
+            "triggered ability"
+        ]
+    },
+    {
+        "01518906-8435-4be1-9ff5-ca4994e21046": [
+            "flavor text matters",
+            "gives evasion"
+        ]
+    },
+    {
+        "01518a87-6b16-4b7b-805d-b652404c6356": [
+            "Royal Falcon",
+            "attack trigger",
+            "evasion",
+            "exalted",
+            "french vanilla",
+            "synergy-attacker"
+        ]
+    },
+    {
+        "01546b7d-a233-4176-8843-d732074dc5b6": [
+            "Halving Season",
+            "Primal Vigor",
+            "Selesnya Loft Gardens",
+            "counter doubler",
+            "synergy-planeswalker",
+            "synergy-token",
+            "token doubler"
+        ]
+    },
+    {
+        "01565f61-a3c8-42ca-99f3-07cfc64034a2": [
+            "activated ability",
+            "armoring",
+            "bottomless mana sink",
+            "firebreathing",
+            "offcolor ability"
+        ]
     }
 ]

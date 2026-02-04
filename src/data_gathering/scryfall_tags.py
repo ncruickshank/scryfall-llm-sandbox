@@ -3,6 +3,7 @@
 ## general
 import time
 from tqdm import tqdm
+import json
 
 ## internet browsing
 from selenium import webdriver
@@ -27,7 +28,7 @@ class ScryfallTags():
         super().__init__()
 
         # objects to be filled in iteratively
-        self.data = {}
+        self.data = []
 
     # === Main Methods ===
 
@@ -37,6 +38,8 @@ class ScryfallTags():
         total_cards:int = None,
         rate_limit_seconds:float = 3.0,
         max_load_time:float = 15.0,
+        save_every:int = 100,
+        output_path:str = '../reports/scryfall_tags.json',
         verbose:bool = True
     ):
         """
@@ -53,6 +56,9 @@ class ScryfallTags():
         rate_limit_seconds = The number of seconds to wait before proceeding
             through the page.
         max_load_time = Max load time between steps
+        save_every = The frequency we want to save the outputs to ensure we don't lose
+            info if we run into issues.
+        output_path = Where to save.
         verbose = If true, prints useful intermediates
 
         Returns
@@ -70,14 +76,14 @@ class ScryfallTags():
         # iterate through all cards
         data = data[:total_cards] # to limit run time.
         progress_bar = tqdm(len(data))
-        card_tags = []
+        # card_tags = []
         processed_cards = 0
         for i in range(len(data)):
             # retrieve card
             card = data[i]
 
             # perform initial filtration
-            bad_card_types = ['Token', 'Card', 'Conspiracy', 'Emblem', 'Hero', 
+            bad_card_types = ['Token', 'Card', 'Conspiracy', 'Emblem',
                               'Phenomenon', 'Plane', 'Scheme', 'Stickers', 'Vanguard']
             for b in bad_card_types:
                 if b in card['type_line'].split(' — ', maxsplit = 1)[0]:
@@ -94,11 +100,18 @@ class ScryfallTags():
                 )
 
                 # store our
-                card_tags.append(out)
+                self.data.append(out)
 
                 # update progress bar and processed_cards
                 progress_bar.update(1)
                 processed_cards += 1
+
+                # save every save_every iterations
+                if i % save_every == 0:
+                    with open(output_path, 'w') as f:
+                        json.dump(self.data, f, indent = 4)
+                        # print(f'Midway save at iterate {i}')
+                        # print(f'\tExample = {out}')
             
             except Exception as e:
                 # print(f'FAILED: {card["name"]} - {e}')
@@ -110,11 +123,16 @@ class ScryfallTags():
         # # quit the browser
         driver.quit()
 
-        self.data = card_tags 
-        del card_tags
+        # self.data = card_tags 
+        # del card_tags
 
         if verbose:
             print(f'Processed {processed_cards} cards Scryfall tags.')
+
+        # one final save
+        with open(output_path, 'w') as f:
+            json.dump(self.data, f, indent = 4)
+            print(f'Data successfully saved to {output_path}')
     
     # === Internal Methods ===
     
