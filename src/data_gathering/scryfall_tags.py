@@ -10,6 +10,13 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+import requests
+
+## local directory navigation
+import os
+
+## project directory
+from ..utils.retry import retry
 
 # class
 class ScryfallTags():
@@ -29,6 +36,7 @@ class ScryfallTags():
 
         # objects to be filled in iteratively
         self.data = []
+        self._data_index = {}
 
     # === Main Methods ===
 
@@ -38,8 +46,10 @@ class ScryfallTags():
         total_cards:int = None,
         rate_limit_seconds:float = 3.0,
         max_load_time:float = 15.0,
-        save_every:int = 100,
+        get_images:bool = True,
+        save_tags_every:int = 100,
         output_path:str = '../reports/scryfall_tags.json',
+        image_folder:str = '../data/images',
         verbose:bool = True
     ):
         """
@@ -56,9 +66,11 @@ class ScryfallTags():
         rate_limit_seconds = The number of seconds to wait before proceeding
             through the page.
         max_load_time = Max load time between steps
-        save_every = The frequency we want to save the outputs to ensure we don't lose
+        get_images = If true, also retrieves the card image crop
+        save_tags_every = The frequency we want to save the outputs to ensure we don't lose
             info if we run into issues.
         output_path = Where to save.
+        image_folder = Where to save images
         verbose = If true, prints useful intermediates
 
         Returns
@@ -68,6 +80,10 @@ class ScryfallTags():
         """
         if total_cards is None:
             total_cards = len(data)
+
+        # make sure the image directory exists if we need it
+        if get_images:
+            os.makedirs(image_folder, exist_ok = True)
             
         # instantiate browser
         driver = webdriver.Chrome()
@@ -75,7 +91,7 @@ class ScryfallTags():
 
         # iterate through all cards
         data = data[:total_cards] # to limit run time.
-        progress_bar = tqdm(len(data))
+        progress_bar = tqdm(total = len(data))
         # card_tags = []
         processed_cards = 0
         for i in range(len(data)):
@@ -83,11 +99,19 @@ class ScryfallTags():
             card = data[i]
 
             # perform initial filtration
-            bad_card_types = ['Token', 'Card', 'Conspiracy', 'Emblem',
-                              'Phenomenon', 'Plane', 'Scheme', 'Stickers', 'Vanguard']
-            for b in bad_card_types:
-                if b in card['type_line'].split(' — ', maxsplit = 1)[0]:
-                    continue # we don't want to extract tags for tokens
+
+            ## card types that don't matter
+            base_type = card['type_line'].split(' — ', 1)[0]
+            bad_card_types = {
+                'Token', 'Card', 'Conspiracy', 'Emblem',
+                'Phenomenon', 'Plane', 'Scheme', 'Stickers', 'Vanguard'
+            }
+            if any(bad in base_type for bad in bad_card_types):
+                continue
+
+            ## Art Series Cards Don't Matter
+            if 'Art Series' in card['set_name']:
+                continue
 
             # scrape the cards tags
             try:
@@ -96,27 +120,27 @@ class ScryfallTags():
                     card = card,
                     driver = driver,
                     rate_limit_seconds = rate_limit_seconds,
-                    max_load_time = max_load_time
+                    max_load_time = max_load_time,
+                    get_images = get_images,
+                    image_folder = image_folder
                 )
 
                 # store our
                 self.data.append(out)
+                self._data_index[card['oracle_id']] = out[card['oracle_id']]
 
                 # update progress bar and processed_cards
                 progress_bar.update(1)
                 processed_cards += 1
 
                 # save every save_every iterations
-                if i % save_every == 0:
+                if i % save_tags_every == 0:
                     with open(output_path, 'w') as f:
                         json.dump(self.data, f, indent = 4)
-                        # print(f'Midway save at iterate {i}')
-                        # print(f'\tExample = {out}')
             
             except Exception as e:
-                # print(f'FAILED: {card["name"]} - {e}')
-                # print(f'\tScryfall URI = {card["scryfall_uri"]}')
-                # return card['scryfall_uri']
+                if verbose:
+                    print(f'FAILED: {card["name"]} - {e}')
                 continue # move onto the next one
 
 
@@ -140,6 +164,8 @@ class ScryfallTags():
         self,
         card:dict,
         driver,
+        get_images:bool = True,
+        image_folder:str = '../data/images',
         rate_limit_seconds:float = 3.0,
         max_load_time:float = 15.0
     ):
@@ -152,6 +178,8 @@ class ScryfallTags():
         ---------
         card = A dictionary containing all key card attributes
         driver = Our selenium web driver
+        get_images = If true, also retrieves the card image crop
+        image_folder = Where to save images
         rate_limit_seconds = The number of seconds to wait before proceeding
             through the page.
         max_load_time = Max load time between steps
@@ -161,25 +189,51 @@ class ScryfallTags():
         None, but self.data will be appended with a sorted list of unique tags
         for the associated card.
         """
+        # Helper Functions
+        def load_scryfall_page():
+            driver.get(card['scryfall_uri'])
+            return wait.until(
+                EC.presence_of_element_located((
+                    By.XPATH,
+                    "//a[contains(@href, 'tagger.scryfall.com')]"
+                ))
+            )
+        
+        def download_image():
+            r = requests.get(img_url, timeout = max_load_time)
+            r.raise_for_status()
+            return r.content
+
         # ---------- Step 1: Cache short-circuit ----------
-        if card['oracle_id'] in self.data:
-            return self.data[card['oracle_id']]
+        if card['oracle_id'] in self._data_index:
+            return self._data_index[card['oracle_id']]
+
         
         wait = WebDriverWait(driver, max_load_time)
         
         # ---------- Step 2: Visit scryfall page (lookup only) ----------
-        time.sleep(rate_limit_seconds)
-        driver.get(card['scryfall_uri'])
+        time.sleep(rate_limit_seconds) # to not overload the servers
 
         # tagger link is typically an <a> pointing to tagger.scryfall.com
-        tagger_link_elem = wait.until(
-            EC.presence_of_element_located((
-                By.XPATH,
-                "//a[contains(@href, 'tagger.scryfall.com')]"
-            ))
+        tagger_link_elem = retry(
+            load_scryfall_page,
+            retries = 3,
+            delay = rate_limit_seconds,
+            context = f'scryfall page: {card["name"]}'
         )
-
         tagger_url = tagger_link_elem.get_attribute('href')
+
+        # (optional) get URL for art crop
+        if get_images:
+            img_link_elem = wait.until(
+                EC.presence_of_element_located((
+                    By.XPATH,
+                    "//a[contains(@href, 'cards.scryfall.io/art_crop')]"
+                ))
+            )
+            img_url = img_link_elem.get_attribute('href')
+            img_url = img_link_elem.get_attribute("href").split("?")[0]
+
 
         # ---------- Step 3: Visit tagger page ----------
         # time.sleep(rate_limit_seconds) # not necessary due to our Scryfall > Tagger loop and the first sleep.
@@ -205,6 +259,23 @@ class ScryfallTags():
             text = row.text.strip()
             if text:
                 tags.append(text)
+
+        # ---------- Step 5. Download Art Crop (Optional) ----------
+        if get_images:
+            # get the image bytes
+            image_bytes = retry(
+                download_image,
+                retries = 3,
+                delay = 2,
+                allowed_exceptions = (requests.RequestException,),
+                context = f'image: {card["name"]}'
+            )
+
+            # download it if we don't already have it
+            image_path = f'{image_folder}/{card["oracle_id"]}.jpg'
+            if not os.path.exists(image_path):
+                with open(image_path, 'wb') as f:
+                    f.write(image_bytes)
 
         # store the output
         normalized_tags = list(sorted(set(tags)))
