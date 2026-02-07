@@ -19,7 +19,7 @@ import os
 from ..utils.retry import retry
 
 # class
-class ScryfallTags():
+class ScryfallScraper():
     """
     Description
     ----------
