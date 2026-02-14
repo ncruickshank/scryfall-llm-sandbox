@@ -6,3 +6,9 @@ SAVE_TAGS_EVERY = 100 # how often to save outputs
 OUTPUT_PATH = '../reports/scryfall_tags.json'
 GET_IMAGES = True
 IMAGE_FOLDER = '../data/images'
+
+# === Question Answering Params ===
+BUILD_DATASET = False
+
+## documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad
+MODEL = 'distilbert-base-cased-distilled-squad'
