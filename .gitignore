@@ -208,3 +208,4 @@ __marimo__/
 data/oracle-cards.json
 *.jpg
 reports/scryfall_tags.json
+*.json
