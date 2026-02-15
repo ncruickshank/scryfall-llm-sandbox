@@ -209,3 +209,6 @@ data/oracle-cards.json
 *.jpg
 reports/scryfall_tags.json
 *.json
+*.safetensors
+*.pt
+huggingface_token.txt

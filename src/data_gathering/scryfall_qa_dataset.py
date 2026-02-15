@@ -26,10 +26,12 @@ class ScryfallQADataset():
 
     def build_dataset(
         self,
+        task:str = 'question-answering',
         card_path:str = '../data/oracle-cards.json',
         tag_path:str = '../reports/scryfall_tags.json', 
         train_size_pct:float = 0.7,
         test_size_n:int = 500,
+        truncate_dataset:int = None,
         random_seed:int = 42,
         verbose:bool = True,
         save_data:bool = True
@@ -43,12 +45,15 @@ class ScryfallQADataset():
 
         Inputs
         ----------
+        task = The modeling task we wish to construct a dataset for
         card_path = The path to where the bulk API data for the cards are stored.
         tag_path = The path to where the scryfall tags are saved
         train_size_pct = The percent of the records that aren't withheld for testing
             purposes that should be allocated to the training dataset.
         test_size_n = The number of records that should be withheld for testing
             purposes.
+        truncate_dataset = If not None, it reduces the dataset to the specified size 
+            *before* any train-val-test splits. 
         random_seed = For controlling random elements.
         verbose = If true, prints useful intermediates
         save_data = If true, saves the dataset as json to the ../data folder
@@ -62,6 +67,11 @@ class ScryfallQADataset():
             tagged cards
         self.test = A list of dicts containing exactly train_size_n of our tagged cards.
         """
+        expected_tasks = ['question-answering', 'summarization']
+        assert task in expected_tasks, f'task must be one of {expected_tasks}, not {task}'
+        if truncate_dataset is not None:
+            assert test_size_n < truncate_dataset, 'Test size must be smaller than dataset.'
+
         # === initial data loading ===
 
         ## load bulk API data
@@ -88,32 +98,28 @@ class ScryfallQADataset():
         i = 0
         for card in card_data:
             if (card['oracle_id'] in card_tags.keys()) and ('oracle_text' in card.keys()):
-                # define context
-                mv_clause = f'Mana Cost = {card["mana_cost"]}\nMana Value = {card["cmc"]}\n' if 'mana_cost' in card.keys() else ''
-                pt_clause = f'Power = {card["power"]}\nToughness = {card["toughness"]}\n' if 'power' in card.keys() else ''
-                ly_clause = f'Loyalty = {card["loyalty"]}\n' if 'loyalty' in card.keys() else ''
-
-                context = f"""
-                {mv_clause}
-                Type Line = {card['type_line']}\n
-                Rules Text = {card['oracle_text']}\n 
-                {pt_clause}
-                {ly_clause}
-                Color Identity = {card['color_identity']}\n
-                Rarity = {card['rarity']}
-                """
-
-                # create output
-                out = {}
-                out['id'] = i
-                out['title'] = card['oracle_id']
-                out['context'] = context 
-                out['question'] = f'How would you functionally tag the Magic the Gathering card [[{card["name"]}]]?'
-                out['answer'] = ', '.join(t for t in card_tags[card['oracle_id']])
+                if task == 'question-answering':
+                    out = self._reshape_to_question_answering(
+                        idx = i,
+                        card = card, 
+                        tags = card_tags[card['oracle_id']]
+                    )
+                
+                elif task == 'summarization':
+                    out = self._reshape_to_summarization(
+                        idx = i, 
+                        card = card,
+                        tags = card_tags[card['oracle_id']]
+                    )
 
                 # store output
                 dataset.append(out)
                 i += 1
+
+        # (optional) truncate dataset for testing purposes
+        if truncate_dataset is not None:
+            dataset = dataset[:truncate_dataset]
+
 
         # === slice dataset into [train, val, test] ===
 
@@ -137,9 +143,9 @@ class ScryfallQADataset():
 
         # === save data and clean up ===
         storage_paths = {
-            '../data/scryfall_qa_train.json': self.train,
-            '../data/scryfall_qa_val.json': self.val,
-            '../data/scryfall_qa_test.json': self.test
+            f'../data/scryfall_{task}_train.json': self.train,
+            f'../data/scryfall_{task}_val.json': self.val,
+            f'../data/scryfall_{task}_test.json': self.test
         }
         
         for path, data in storage_paths.items():
@@ -187,12 +193,105 @@ class ScryfallQADataset():
             }
         )
 
-        with open(test_path, 'r') as f:
-            self.test = json.load(f)
+        # with open(test_path, 'r') as f:
+        #     self.test = json.load(f)
+        self.test = load_dataset('json', data_files = test_path)
 
         if verbose:
             print('Scryfall Tag Question Answering Dataset Loaded')
             print(f'\tTrain Records = {self.dataset['train'].num_rows}')
             print(f'\tVal Records = {self.dataset['test'].num_rows}')
             print(f'\tTest Records = {len(self.test)}')
+
+    # === Internal Methods ===
+
+    def _reshape_to_question_answering(self, idx, card, tags):
+        """
+        Description
+        ----------
+        This method reshapes a card into a question-answering framework.
+        Specifically, with columns ['id', 'title', 'question', 'context', 'answer']
+
+        Inputs
+        ----------
+        idx = The arbitrary incremental number
+        card = The dictionary of card details
+        tags = The tags for the associated card.
+
+        Returns
+        ----------
+        out = A dict containing the requisite keys.
+        """
+        # define context
+
+        ## subclauses that are not always present
+        mv_clause = f'Mana Cost = {card["mana_cost"]}\nMana Value = {card["cmc"]}\n' if 'mana_cost' in card.keys() else ''
+        pt_clause = f'Power = {card["power"]}\nToughness = {card["toughness"]}\n' if 'power' in card.keys() else ''
+        ly_clause = f'Loyalty = {card["loyalty"]}\n' if 'loyalty' in card.keys() else ''
+
+        ## compile the context
+        context = f"""
+        {mv_clause}
+        Type Line = {card['type_line']}\n
+        Rules Text = {card['oracle_text']}\n 
+        {pt_clause}
+        {ly_clause}
+        Color Identity = {card['color_identity']}\n
+        Rarity = {card['rarity']}
+        """
+
+        # create output
+        out = {}
+        out['id'] = idx
+        out['title'] = card['oracle_id']
+        out['context'] = context 
+        out['question'] = f'How would you functionally tag the Magic the Gathering card [[{card["name"]}]]?'
+        out['answer'] = ', '.join(t for t in tags)
+
+        return out
+    
+    def _reshape_to_summarization(self, idx, card, tags):
+        """
+        Description
+        ----------
+        This method reshapes a card into a summarization framework
+
+        Inputs
+        ----------
+        idx = The arbitrary incremental number
+        card = The dictionary of card details
+        tags = The tags for the associated card.
+
+        Returns
+        ----------
+        out = A dict containing the requisite keys.
+        """
+        # clean up the document
+        
+        ## subclauses that are not always present
+        mv_clause = f'Mana Cost = {card["mana_cost"]}\nMana Value = {card["cmc"]}\n' if 'mana_cost' in card.keys() else ''
+        pt_clause = f'Power = {card["power"]}\nToughness = {card["toughness"]}\n' if 'power' in card.keys() else ''
+        ly_clause = f'Loyalty = {card["loyalty"]}\n' if 'loyalty' in card.keys() else ''
+
+        ## compile the document
+        doc = f"""
+        {card['name']}
+        {mv_clause}
+        Type Line = {card['type_line']}\n
+        Rules Text = {card['oracle_text']}\n 
+        {pt_clause}
+        {ly_clause}
+        Color Identity = {card['color_identity']}\n
+        Rarity = {card['rarity']}
+        """
+
+        # creat output
+        out = {}
+        out['id'] = idx
+        out['document'] = doc
+        out['summary'] = ', '.join(t for t in tags)
+
+        return out 
+
+
     

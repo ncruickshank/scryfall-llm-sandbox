@@ -7,8 +7,20 @@ OUTPUT_PATH = '../reports/scryfall_tags.json'
 GET_IMAGES = True
 IMAGE_FOLDER = '../data/images'
 
-# === Question Answering Params ===
+# === Modeling Params ===
 BUILD_DATASET = False
+TASK = 'summarization'
 
-## documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad
-MODEL = 'distilbert-base-cased-distilled-squad'
+# === Question Asnwering ===
+# # documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad
+# MODEL = 'distilbert-base-cased-distilled-squad'
+
+# === Summarization ===
+
+# smaller model
+# documentation = 
+MODEL = 'google/mt5-small' # smaller model
+
+# # larger model
+# # documentation = https://huggingface.co/facebook/bart-large-cnn
+# MODEL = 'facebook/bart-large-cnn'
