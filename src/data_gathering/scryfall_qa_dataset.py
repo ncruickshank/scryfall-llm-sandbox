@@ -195,7 +195,7 @@ class ScryfallQADataset():
 
         # with open(test_path, 'r') as f:
         #     self.test = json.load(f)
-        self.test = load_dataset('json', data_files = test_path)
+        self.test = load_dataset('json', data_files = {'test': test_path})
 
         if verbose:
             print('Scryfall Tag Question Answering Dataset Loaded')

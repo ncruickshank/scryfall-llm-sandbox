@@ -8,7 +8,7 @@ GET_IMAGES = True
 IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
-BUILD_DATASET = False
+BUILD_DATASET = True
 TASK = 'summarization'
 
 # === Question Asnwering ===
@@ -31,6 +31,6 @@ BATCH_SIZE = 1 # 1 for local training, 8 for GPU
 
 LEARNING_RATE = 2e-4
 GRAD_ACCUMULATION_STEPS = 8
-NUM_EPOCHS = 10
+NUM_EPOCHS = 50
 
 OUTPUT_DIR = 'scryfall-tag-summarizer' # be sure to create on the hub first

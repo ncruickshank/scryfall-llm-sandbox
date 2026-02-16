@@ -36,6 +36,14 @@ def preprocess(
         # padding = 'max_length' # ignored to allow dynamic padding
     )
 
-    model_inputs['labels'] = labels['input_ids']
+    labels_ids = labels['input_ids']
+
+    # replace padding token id with -100
+    labels_ids = [
+        [(token if token != tokenizer.pad_token_id else -100) for token in label]
+        for label in labels_ids
+    ]
+
+    model_inputs['labels'] = labels_ids
 
     return model_inputs
