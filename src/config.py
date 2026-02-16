@@ -30,3 +30,7 @@ MAX_TARGET_LENGTH = 64
 BATCH_SIZE = 1 # 1 for local training, 8 for GPU
 
 LEARNING_RATE = 2e-4
+GRAD_ACCUMULATION_STEPS = 8
+NUM_EPOCHS = 10
+
+OUTPUT_DIR = 'scryfall-tag-summarizer' # be sure to create on the hub first
