@@ -24,3 +24,9 @@ MODEL = 'google/mt5-small' # smaller model
 # # larger model
 # # documentation = https://huggingface.co/facebook/bart-large-cnn
 # MODEL = 'facebook/bart-large-cnn'
+
+MAX_INPUT_LENGTH = 256
+MAX_TARGET_LENGTH = 64
+BATCH_SIZE = 1 # 1 for local training, 8 for GPU
+
+LEARNING_RATE = 2e-4

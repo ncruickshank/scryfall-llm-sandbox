@@ -274,9 +274,9 @@ class ScryfallQADataset():
         ly_clause = f'Loyalty = {card["loyalty"]}\n' if 'loyalty' in card.keys() else ''
 
         ## compile the document
+        ## choosing not to have the mv_clause
         doc = f"""
         {card['name']}
-        {mv_clause}
         Type Line = {card['type_line']}\n
         Rules Text = {card['oracle_text']}\n 
         {pt_clause}
