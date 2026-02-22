@@ -9,9 +9,9 @@ IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
 BUILD_DATASET = True
-DATASET_SIZE_N = 500 # Default = None, choose for max datasize
+DATASET_SIZE_N = 200 # Default = None, choose for max datasize
 TEST_SIZE_N = 10
-TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'multi_label_classification']
+TASK = 'seq2seq' # ['question_answering', 'summarization', 'multi_label_classification', 'seq2seq']
 
 # === Question Asnwering ===
 # # documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad
@@ -20,8 +20,10 @@ TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'm
 # === Summarization ===
 
 # smaller model
-# documentation = 
+# documentation = https://huggingface.co/google/flan-t5-small
 # MODEL_NAME = 'google/mt5-small' # smaller model
+MODEL_NAME = 'google/flan-t5-small' # smaller model
+# MODEL_NAME = 'google/flan-t5-base' # larger model
 
 # # larger model
 # # documentation = https://huggingface.co/facebook/bart-large-cnn
@@ -29,17 +31,20 @@ TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'm
 
 # === Multi-Label Classification ===
 # documentation = https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english
-MODEL_NAME = 'distilbert-base-uncased'
+# MODEL_NAME = 'distilbert-base-uncased'
 
 # === Training ===
 
 MAX_INPUT_LENGTH = 256
 MAX_TARGET_LENGTH = 64
-BATCH_SIZE = 1 # 1 for local training, 8 for GPU
+BATCH_SIZE = 8 # 1 for local training, 8 for GPU
 
 LEARNING_RATE = 2e-5
 WEIGHT_DECAY = 0.01
-GRAD_ACCUMULATION_STEPS = 8
+GRAD_ACCUMULATION_STEPS = 8 # useful if using accelerate
 NUM_EPOCHS = 10
+
+GENERATION_MAX_LENGTH = 128
+GENERATION_NUM_BEAMS = 4
 
 OUTPUT_DIR = 'scryfall-tag-summarizer' # be sure to create on the hub first
