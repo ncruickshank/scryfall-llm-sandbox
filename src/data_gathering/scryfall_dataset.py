@@ -1,7 +1,14 @@
+# packages
+
+## general use
 import json
+
+## data wrangling
 import numpy as np
+
+## modeling
 from sklearn.model_selection import train_test_split
-from datasets import load_dataset
+from datasets import Dataset, DatasetDict
 
 class ScryfallDataset():
     """
@@ -19,10 +26,13 @@ class ScryfallDataset():
         super().__init__()
 
         # create objects to be populated lated
-        self.train = []
-        self.val = []
-        self.test = []
+        self.task = None
         self.dataset = None
+
+        ## (optional) if our task is multi_label_classification
+        self.unique_tags = None
+        self.label2id = None
+        self.id2label = None
 
     def build_dataset(
         self,
@@ -66,11 +76,20 @@ class ScryfallDataset():
         self.val = A list of dicts containing approximately (1 - train_size_pct) of our
             tagged cards
         self.test = A list of dicts containing exactly train_size_n of our tagged cards.
+
+        If our task is multi_label_classification, the following additional objects
+        will be populated:
+        - self.unique_tags = A list of unique tags across the dataset
+        - self.label2id = A mapping from label (tag) to id
+        - self.id2label = A mapping from id to label (tag)
         """
-        expected_tasks = ['question-answering', 'summarization']
+        expected_tasks = ['question-answering', 'summarization', 'multi_label_classification']
         assert task in expected_tasks, f'task must be one of {expected_tasks}, not {task}'
         if truncate_dataset is not None:
             assert test_size_n < truncate_dataset, 'Test size must be smaller than dataset.'
+
+        # store params as objects
+        self.task = task
 
         # === initial data loading ===
 
@@ -90,11 +109,16 @@ class ScryfallDataset():
             for oid, tags in c.items():
                 card_tags[oid] = tags
 
+        # (optional) truncate dataset for testing purposes
+        if truncate_dataset is not None:
+            card_data = card_data[:truncate_dataset]
+
         # === build dataset ===
 
         ## iterate through card_data to build dataset using only oids that
         ## are also in card_tags
         dataset = []
+        all_tags = [] # used if our task is multi_label_classification
         i = 0
         for card in card_data:
             if (card['oracle_id'] in card_tags.keys()) and ('oracle_text' in card.keys()):
@@ -112,14 +136,27 @@ class ScryfallDataset():
                         tags = card_tags[card['oracle_id']]
                     )
 
+                elif task == 'multi_label_classification': 
+                    ## clean up the dataset
+                    out = self._reshape_to_multi_label_classification(
+                        idx = i,
+                        card = card,
+                        tags = card_tags[card['oracle_id']]
+                    )
+
+                    ## extend the collection of tags
+                    all_tags.extend(out['tags']) # we will create labels as multi-hot vectors later
+
                 # store output
                 dataset.append(out)
                 i += 1
 
-        # (optional) truncate dataset for testing purposes
-        if truncate_dataset is not None:
-            dataset = dataset[:truncate_dataset]
-
+        # === [if our task is multi-label classification] additional processing ===
+        
+        ## create label mapping objects
+        self.unique_tags = sorted(set(all_tags))
+        self.label2id = {tag: i for i, tag in enumerate(self.unique_tags)}
+        self.id2label = {i: tag for tag, i in self.label2id.items()}
 
         # === slice dataset into [train, val, test] ===
 
@@ -127,15 +164,16 @@ class ScryfallDataset():
         rng = np.random.default_rng(seed = random_seed)
         choices = list(range(len(dataset)))
         test_ids = rng.choice(choices, size = test_size_n, replace = False)
+        test = []
         nontest = []
         for record in dataset:
             if record['id'] in test_ids:
-                self.test.append(record)
+                test.append(record)
             else:
                 nontest.append(record)
         
         ## perform a standard train test split on the remained
-        self.train, self.val = train_test_split(
+        train, val = train_test_split(
             nontest,
             train_size = train_size_pct, 
             random_state = random_seed
@@ -143,9 +181,9 @@ class ScryfallDataset():
 
         # === save data and clean up ===
         storage_paths = {
-            f'../data/scryfall_{task}_train.json': self.train,
-            f'../data/scryfall_{task}_val.json': self.val,
-            f'../data/scryfall_{task}_test.json': self.test
+            f'../data/scryfall_{task}_train.json': train,
+            f'../data/scryfall_{task}_val.json': val,
+            f'../data/scryfall_{task}_test.json': test
         }
         
         for path, data in storage_paths.items():
@@ -154,9 +192,9 @@ class ScryfallDataset():
 
         if verbose:
             print(f'Scryfall Tag Question Answering Dataset Built')
-            print(f'\tTrain Records = {len(self.train)}')
-            print(f'\tValidation Records = {len(self.val)}')
-            print(f'\tTest Records = {len(self.test)}')
+            print(f'\tTrain Records = {len(train)}')
+            print(f'\tValidation Records = {len(val)}')
+            print(f'\tTest Records = {len(test)}')
             if save_data:
                 print('\tRecords saved to...')
                 for path, _ in storage_paths.items():
@@ -184,24 +222,54 @@ class ScryfallDataset():
         ----------
 
         """
-        # load dataset
-        self.dataset = load_dataset(
-            'json',
-            data_files = {
-                'train': train_path,
-                'test': val_path
-            }
-        )
+        # # load dataset
+        # self.dataset = load_dataset(
+        #     'json',
+        #     data_files = {
+        #         'train': train_path,
+        #         'test': val_path
+        #     }
+        # )
 
-        # with open(test_path, 'r') as f:
-        #     self.test = json.load(f)
-        self.test = load_dataset('json', data_files = {'test': test_path})
+        # # with open(test_path, 'r') as f:
+        # #     self.test = json.load(f)
+        # self.test = load_dataset('json', data_files = {'test': test_path})
+
+        # load datasets
+        data_paths = {'train': train_path, 'val': val_path, 'test': test_path}
+        output = {}
+        for name, path in data_paths.items():
+            # read in the dataset
+            with open(path, 'r') as f:
+                dataset_split = json.load(f)
+
+            # ## perform multi-hot encoding of our labels
+            # if self.task == 'multi_label_classification':
+            #     ### prepare to update the dataset
+            #     dataset_raw = dataset_split.copy()
+            #     dataset_split = []
+
+            #     ### multi-hot encode the card tags
+            #     for card in dataset_raw:
+            #         out = self._encode_labels(card)
+            #         dataset_split.append(out)
+
+            ## store the dataset
+            output[name] = dataset_split
+
+        # store the output as a huggingface dataset
+        dataset_dict = DatasetDict()
+        for name, data in output.items():
+            dataset_dict[name] = Dataset.from_list(data)
+        self.dataset = dataset_dict
 
         if verbose:
-            print('Scryfall Tag Question Answering Dataset Loaded')
+            print(f'Scryfall Tag {self.task.replace("_", " ").title()} Dataset Loaded')
             print(f'\tTrain Records = {self.dataset['train'].num_rows}')
-            print(f'\tVal Records = {self.dataset['test'].num_rows}')
-            print(f'\tTest Records = {len(self.test)}')
+            print(f'\tVal Records = {self.dataset['val'].num_rows}')
+            print(f'\tTest Records = {self.dataset['test'].num_rows}')
+
+        del output, dataset_dict
 
     # === Internal Methods ===
 
@@ -293,5 +361,47 @@ class ScryfallDataset():
 
         return out 
 
+    def _reshape_to_multi_label_classification(self, idx, card, tags):
+        """
+        Description
+        ----------
+        This method reshapes a card into a summarization framework
 
+        Inputs
+        ----------
+        idx = The arbitrary incremental number
+        card = The dictionary of card details
+        tags = The tags for the associated card.
+
+        Returns
+        ----------
+        out = A dict containing the requisite keys.
+        """
+        # clean up the document
+        
+        ## subclauses that are not always present
+        mv_clause = f'Mana Cost = {card["mana_cost"]}\nMana Value = {card["cmc"]}\n' if 'mana_cost' in card.keys() else ''
+        pt_clause = f'Power = {card["power"]}\nToughness = {card["toughness"]}\n' if 'power' in card.keys() else ''
+        ly_clause = f'Loyalty = {card["loyalty"]}\n' if 'loyalty' in card.keys() else ''
+
+        ## compile the document
+        ## choosing not to have the mv_clause
+        doc = f"""
+        {card['name']}
+        {mv_clause}
+        Type Line = {card['type_line']}\n
+        Rules Text = {card['oracle_text']}\n 
+        {pt_clause}
+        {ly_clause}
+        Color Identity = {card['color_identity']}\n
+        Rarity = {card['rarity']}
+        """
+
+        # creat output
+        out = {}
+        out['id'] = idx
+        out['document'] = doc
+        out['tags'] = tags
+
+        return out
     

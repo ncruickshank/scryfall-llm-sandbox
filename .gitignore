@@ -212,3 +212,4 @@ reports/scryfall_tags.json
 *.safetensors
 *.pt
 huggingface_token.txt
+/models

@@ -9,7 +9,9 @@ IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
 BUILD_DATASET = True
-TASK = 'summarization'
+DATASET_SIZE_N = 500 # Default = None, choose for max datasize
+TEST_SIZE_N = 10
+TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'multi_label_classification']
 
 # === Question Asnwering ===
 # # documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad
@@ -19,18 +21,25 @@ TASK = 'summarization'
 
 # smaller model
 # documentation = 
-MODEL = 'google/mt5-small' # smaller model
+# MODEL_NAME = 'google/mt5-small' # smaller model
 
 # # larger model
 # # documentation = https://huggingface.co/facebook/bart-large-cnn
-# MODEL = 'facebook/bart-large-cnn'
+# MODEL_NAME = 'facebook/bart-large-cnn'
+
+# === Multi-Label Classification ===
+# documentation = https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english
+MODEL_NAME = 'distilbert-base-uncased'
+
+# === Training ===
 
 MAX_INPUT_LENGTH = 256
 MAX_TARGET_LENGTH = 64
 BATCH_SIZE = 1 # 1 for local training, 8 for GPU
 
-LEARNING_RATE = 2e-4
+LEARNING_RATE = 2e-5
+WEIGHT_DECAY = 0.01
 GRAD_ACCUMULATION_STEPS = 8
-NUM_EPOCHS = 50
+NUM_EPOCHS = 10
 
 OUTPUT_DIR = 'scryfall-tag-summarizer' # be sure to create on the hub first
