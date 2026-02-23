@@ -8,6 +8,7 @@ from transformers import AutoTokenizer
 from transformers import AutoModelForSeq2SeqLM
 from transformers import Seq2SeqTrainingArguments
 from transformers import Seq2SeqTrainer
+from transformers import DataCollatorForSeq2Seq
 
 ## other
 import numpy as np
@@ -115,16 +116,24 @@ class FineTuneLLM():
             eval_strategy  = 'epoch',
             save_strategy = 'epoch',
             load_best_model_at_end = True,
-            metric_for_best_model = 'eval_micro_f1',
+            metric_for_best_model = 'eval_loss',
             # logging_dir = '../logs',
+            logging_steps = 1,
             learning_rate = learning_rate,
             weight_decay = weight_decay,
-            fp16 = True,
+            fp16 = False, # True,
 
             # specific to Seq2SeqTrainer
             predict_with_generate = True,
             generation_max_length = generation_max_length,
             generation_num_beams = generation_num_beams
+        )
+
+        data_collator = DataCollatorForSeq2Seq(
+            tokenizer = self.tokenizer,
+            model = self.model,
+            label_pad_token_id = -100,
+            pad_to_multiple_of = 8 if training_args.fp16 else None
         )
 
         # train the model
@@ -133,6 +142,7 @@ class FineTuneLLM():
             args = training_args,
             train_dataset = self.dataset['train'],
             eval_dataset = self.dataset['val'],
+            data_collator = data_collator,
             processing_class = self.tokenizer,
             compute_metrics = self._compute_metrics
         )
@@ -163,7 +173,7 @@ class FineTuneLLM():
         )
 
         decoded = self.tokenizer.decode(outputs[0], skip_special_tokens = True)
-        card_tags = self._parse_tags(decoded)
+        card_tags = self._parse_text(decoded)
 
         return card_tags
 
@@ -259,15 +269,22 @@ class FineTuneLLM():
         if isinstance(preds, tuple):
             preds = preds[0]
 
-        # Convert list-of-arrays → stacked array
-        if isinstance(preds, list):
-            preds = np.stack(preds)
+        # # Convert list-of-arrays → stacked array
+        # if isinstance(preds, list):
+        #     preds = np.stack(preds)
 
-        if isinstance(labels, list):
-            labels = np.stack(labels)
+        # if isinstance(labels, list):
+        #     labels = np.stack(labels)
 
-        labels = labels.copy()
-        labels[labels == -100] = self.tokenizer.pad_token_id
+        # convert preds and labels to numpy arrays
+        preds = np.array(preds)
+        labels = np.array(labels)
+
+        # replace -100 in BOTH labels and predictions
+        # labels = labels.copy()
+        # labels[labels == -100] = self.tokenizer.pad_token_id
+        labels = np.where(labels != -100, labels, self.tokenizer.pad_token_id)
+        preds = np.where(preds != -100, preds, self.tokenizer.pad_token_id)
 
         # print(preds.shape)
 
@@ -284,8 +301,8 @@ class FineTuneLLM():
         all_pred, all_true = [], []
 
         for pred, true in zip(decoded_preds, decoded_labels):
-            pred_set = self._parse_tags(pred)
-            true_set = self._parse_tags(true)
+            pred_set = self._parse_text(pred)
+            true_set = self._parse_text(true)
 
             # convert to binary vectors over union
             union = list(pred_set | true_set)

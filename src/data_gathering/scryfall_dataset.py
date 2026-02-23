@@ -320,6 +320,7 @@ class ScryfallDataset():
 
         ## compile the document
         ## choosing not to have the mv_clause
+        ## CONSIDER dropping the "Type Line = " formatting as it may trick the model into a summarization task
         doc = f"""
         Generate comma-separated Scryfall community tags for the following card:
 
@@ -335,11 +336,22 @@ class ScryfallDataset():
         ----------
         """
 
+        # --- Efficient Tag Trimming ---
+        # We truncate each tag at common 'noise' markers: 'annotation:', ' via', or '('
+        # This turns "group slugannotation: via..." into just "group slug"
+        cleaned_tags = set()
+        for t in tags:
+            # Split and take the first part
+            # ' via' (with space) prevents accidental trimming of words like 'viaduct' (if any)
+            core_tag = t.split('annotation:')[0].split(' via')[0].split('(')[0].strip().lower()
+            if core_tag:
+                cleaned_tags.add(core_tag)
+
         # creat output
         out = {}
         out['id'] = idx
         out['document'] = doc
-        out['tags'] = ', '.join(sorted(set(tags))).lower()
+        out['tags'] = ', '.join(sorted(set(cleaned_tags))).lower()
 
         return out 
 

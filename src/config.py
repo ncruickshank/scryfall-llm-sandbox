@@ -9,8 +9,8 @@ IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
 BUILD_DATASET = True
-DATASET_SIZE_N = 200 # Default = None, choose for max datasize
-TEST_SIZE_N = 10
+DATASET_SIZE_N = 3000 # Default = None, choose for max datasize
+TEST_SIZE_N = 50
 TASK = 'seq2seq' # ['question_answering', 'summarization', 'multi_label_classification', 'seq2seq']
 
 # === Question Asnwering ===
