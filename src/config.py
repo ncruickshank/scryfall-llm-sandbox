@@ -9,8 +9,8 @@ IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
 BUILD_DATASET = True
-DATASET_SIZE_N = 3000 # Default = None, choose for max datasize
-TEST_SIZE_N = 50
+DATASET_SIZE_N = 200 # Default = None, choose for max datasize
+TEST_SIZE_N = 5
 TASK = 'seq2seq' # ['question_answering', 'summarization', 'multi_label_classification', 'seq2seq']
 
 # === Question Asnwering ===
@@ -47,4 +47,4 @@ NUM_EPOCHS = 10
 GENERATION_MAX_LENGTH = 128
 GENERATION_NUM_BEAMS = 4
 
-OUTPUT_DIR = 'scryfall-tag-summarizer' # be sure to create on the hub first
+OUTPUT_DIR = 'scryfall-auto-tagger' # be sure to create on the hub first
