@@ -322,10 +322,12 @@ class ScryfallDataset():
         ## choosing not to have the mv_clause
         ## CONSIDER dropping the "Type Line = " formatting as it may trick the model into a summarization task
         doc = f"""
-        Generate comma-separated Scryfall community tags for the following card:
+        mtg card scryfall tags task:
+        Return tags for the following card using this format:
+        <tag> example tag </tag>
 
         ----------
-        {card['name']}
+        Card = {card['name']}
         {mv_clause}
         Type Line = {card['type_line']}\n
         Rules Text = {card['oracle_text']}\n 
@@ -346,12 +348,16 @@ class ScryfallDataset():
             core_tag = t.split('annotation:')[0].split(' via')[0].split('(')[0].strip().lower()
             if core_tag:
                 cleaned_tags.add(core_tag)
+                
+        # reshape tags to text
+        structured_tags = [f'<tag> {t.lower()} </tag>' for t in cleaned_tags]
+        tag_text = 'tags: ' + ' '.join(structured_tags)
 
         # creat output
         out = {}
         out['id'] = idx
         out['document'] = doc
-        out['tags'] = ', '.join(sorted(set(cleaned_tags))).lower()
+        out['tags'] = tag_text
 
         return out 
 
