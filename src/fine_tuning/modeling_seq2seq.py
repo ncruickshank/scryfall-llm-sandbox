@@ -122,8 +122,8 @@ class FineTuneLLM():
         n_epochs:int,
         learning_rate:float,
         weight_decay:float,
-        generation_max_length:int,
-        generation_num_beams:int,
+        generation_max_length:int = None,
+        generation_num_beams:int = None,
         output_dir:str = '../models/scryfall_auto_tagger'
     ):
         """
@@ -138,8 +138,9 @@ class FineTuneLLM():
         n_epochs = The number of epochs to train
         learning_rate = The learning rate for learning
         weight_decay = The weight decay rate
-        generation_max_length = The max desired length for the desired output
-        generation_num_beams = For beam search
+        generation_max_length = The max desired length for the desired output. Only used
+            if we are in a seq2seq paradigm
+        generation_num_beams = For beam search. Only used if we are in a seq2seq paradigm
         device = The device we are training on. Either 'cpu' or 'cuda'
 
         Returns

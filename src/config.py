@@ -9,9 +9,10 @@ IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
 BUILD_DATASET = True
-DATASET_SIZE_N = 1000 # Default = None, choose for max datasize
-TEST_SIZE_N = 10
-TASK = 'seq2seq' # ['question_answering', 'summarization', 'multi_label_classification', 'seq2seq']
+TAG_SIZE = 500 # top n tags only, and only cards which contain at least one of those tags
+DATASET_SIZE_N = None # Default = None, choose for max datasize
+TEST_SIZE_N = 50
+TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'multi_label_classification', 'seq2seq']
 
 # === Question Asnwering ===
 # # documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad
@@ -22,7 +23,7 @@ TASK = 'seq2seq' # ['question_answering', 'summarization', 'multi_label_classifi
 # smaller model
 # documentation = https://huggingface.co/google/flan-t5-small
 # MODEL_NAME = 'google/mt5-small' # smaller model
-MODEL_NAME = 'google/flan-t5-small' # smaller model
+# MODEL_NAME = 'google/flan-t5-small' # smaller model
 # MODEL_NAME = 'google/flan-t5-base' # larger model
 
 # # larger model
@@ -31,7 +32,8 @@ MODEL_NAME = 'google/flan-t5-small' # smaller model
 
 # === Multi-Label Classification ===
 # documentation = https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english
-# MODEL_NAME = 'distilbert-base-uncased'
+MODEL_NAME = 'distilbert-base-uncased' # smaller
+# MODEL_NAME = 'microsoft/deberta-v3-base' # larger
 
 # === Training ===
 MAX_INPUT_LENGTH = 512

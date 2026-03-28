@@ -2,9 +2,11 @@
 
 ## general use
 import json
+from collections import defaultdict
 
 ## data wrangling
 import numpy as np
+import heapq
 
 ## modeling
 from sklearn.model_selection import train_test_split
@@ -37,6 +39,7 @@ class ScryfallDataset():
         self.unique_tags = None
         self.label2id = None
         self.id2label = None
+        self.class_weights = None
 
     def build_dataset(
         self,
@@ -44,6 +47,7 @@ class ScryfallDataset():
         tag_path:str = '../reports/scryfall_tags.json', 
         train_size_pct:float = 0.7,
         test_size_n:int = 500,
+        top_n_tags:int = None,
         truncate_dataset:int = None,
         random_seed:int = 42,
         verbose:bool = True,
@@ -67,6 +71,8 @@ class ScryfallDataset():
             purposes.
         truncate_dataset = If not None, it reduces the dataset to the specified size 
             *before* any train-val-test splits. 
+        top_n_tags = If not None, this is a number to dictate how many of the most 
+            common tags we want to train on.
         random_seed = For controlling random elements.
         verbose = If true, prints useful intermediates
         save_data = If true, saves the dataset as json to the ../data folder
@@ -99,13 +105,29 @@ class ScryfallDataset():
         with open(tag_path, 'r') as f:
             card_tags_raw = json.load(f)
 
+        ## get tag counts and use that to define unique tags (limited if necessary)
+        tag_counts = defaultdict(int)
+        for c in card_tags_raw:
+            ## make sure there is only one k,v pair in c
+            assert len(c) == 1, f'Somehow {c} has more then one k,v pair'
+            for _, tags in c.items():
+                for t in tags:
+                    tag_counts[t] += 1
+        if top_n_tags is not None:
+            self.unique_tags = heapq.nlargest(top_n_tags, tag_counts.items(), key = lambda item: item[1])
+            self.unique_tags = set(dict(self.unique_tags).keys())
+
         ## reshape tags to dict
         card_tags = {}
         for c in card_tags_raw:
             ## make sure there is only one k,v pair in c
             assert len(c) == 1, f'Somehow {c} has more then one k,v pair'
             for oid, tags in c.items():
-                card_tags[oid] = tags
+                tags_trimmed = [t for t in tags if t in self.unique_tags]
+                # print(f'tags = {tags}')
+                # print(f'tags_trimmed = {tags_trimmed}')
+                if (tags_trimmed is not None) and (len(tags_trimmed) > 0):
+                    card_tags[oid] = tags_trimmed # tags
 
         # (optional) truncate dataset for testing purposes
         if truncate_dataset is not None:
@@ -238,6 +260,10 @@ class ScryfallDataset():
             dataset_dict[name] = Dataset.from_list(data)
         self.dataset = dataset_dict
 
+        ## compute class weights as needed
+        if self.task == 'multi_label_classification':
+            self._compute_class_weights()
+
         if verbose:
             print(f'Scryfall Tag {self.task.replace("_", " ").title()} Dataset Loaded')
             print(f'\tTrain Records = {self.dataset['train'].num_rows}')
@@ -249,6 +275,31 @@ class ScryfallDataset():
         del output, dataset_dict
 
     # === Internal Methods ===
+
+    def _compute_class_weights(self):
+        """
+        Description
+        ----------
+        Computes class weights for a multi-label classification problem.
+
+        Inputs
+        ----------
+
+        Returns
+        ----------
+        None, but self.class_weights will be populated.
+        """
+        counts = np.zeros(len(self.label2id))
+
+        for tags in self.dataset['train']['tags']:
+            for tag in tags:
+                if tag in self.label2id:
+                    counts[self.label2id[tag]] += 1
+
+        total = len(self.dataset['train'])
+
+        # inverse frequency (standard approach)
+        self.class_weights = (total - counts) / (counts + 1e-6)
 
     def _reshape_to_question_answering(self, idx, card, tags):
         """
