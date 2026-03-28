@@ -11,6 +11,9 @@ from transformers import Seq2SeqTrainer
 from transformers import DataCollatorForSeq2Seq
 from transformers import GenerationConfig
 
+## lora
+from peft import LoraConfig, get_peft_model
+
 ## other
 import re
 import numpy as np
@@ -42,6 +45,17 @@ class FineTuneLLM():
         # initialize objects
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+        # load model to lora
+        lora_config = LoraConfig(
+            task_type = 'SEQ_2_SEQ_LM',
+            r = 8,
+            lora_alpha = 32, 
+            target_modules = ['q', 'v'],
+            lora_dropout = 0.1
+        )
+        self.model = get_peft_model(self.model, lora_config, 'default')
+        self.model.print_trainable_parameters()
         
         # # Ensure generation start tokens exist
         # if self.model.config.decoder_start_token_id is None:
