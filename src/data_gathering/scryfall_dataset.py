@@ -300,6 +300,7 @@ class ScryfallDataset():
 
         # inverse frequency (standard approach)
         self.class_weights = (total - counts) / (counts + 1e-6)
+        self.class_weights = np.clip(self.class_weights, 1.0, 20.0) # clamp weights
 
     def _reshape_to_question_answering(self, idx, card, tags):
         """

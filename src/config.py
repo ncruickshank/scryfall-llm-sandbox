@@ -38,12 +38,12 @@ MODEL_NAME = 'distilbert-base-uncased' # smaller
 # === Training ===
 MAX_INPUT_LENGTH = 512
 MAX_TARGET_LENGTH = 128
-BATCH_SIZE = 16 # 1 for local training, 8 for GPU
+BATCH_SIZE = 48 # 1 for local training, 8 for GPU
 
-LEARNING_RATE = 5e-5
+LEARNING_RATE = 5e-4
 WEIGHT_DECAY = 0.01
 GRAD_ACCUMULATION_STEPS = 8 # useful if using accelerate
-NUM_EPOCHS = 5
+NUM_EPOCHS = 20
 
 GENERATION_MAX_LENGTH = 128
 GENERATION_NUM_BEAMS = 4
