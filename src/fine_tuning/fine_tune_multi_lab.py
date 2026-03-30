@@ -11,6 +11,7 @@ from transformers import TrainingArguments
 # from transformers import default_data_collator
 from transformers import DataCollatorWithPadding
 from transformers import Trainer
+from transformers import EarlyStoppingCallback
 
 ## lora
 from peft import LoraConfig, get_peft_model
@@ -18,6 +19,7 @@ from peft import LoraConfig, get_peft_model
 ## other
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
+from scipy.special import expit 
 
 # classes
 class MultiLabelTrainer(Trainer):
@@ -97,11 +99,18 @@ class FineTuneLLM():
         # )
 
         # load model to lora
+        if model_name == 'distilbert-base-uncased':
+            tgt_mods = ['q_lin', 'v_lin']
+            r = 8 # lower representional capacity, smaller adapter
+        elif model_name == 'microsoft/deberta-v3-base':
+            tgt_mods = ["query_proj", "key_proj", "value_proj"] # "value_proj" <- for extra capacity
+            r = 16 # larger representational capacity, larger adapter
+
         lora_config = LoraConfig(
             task_type = 'SEQ_CLS',
-            r = 8,
+            r = r,
             lora_alpha = 32,
-            target_modules = ['q_lin', 'v_lin'],
+            target_modules = tgt_mods,
             lora_dropout = 0.1
         )
         self.model = get_peft_model(self.model, lora_config, 'default')
@@ -150,6 +159,7 @@ class FineTuneLLM():
         n_epochs:int,
         learning_rate:float,
         weight_decay:float,
+        patience:int = 5,
         output_dir:str = '../models/scryfall_auto_tagger'
     ):
         """
@@ -164,6 +174,8 @@ class FineTuneLLM():
         n_epochs = The number of epochs to train
         learning_rate = The learning rate for learning
         weight_decay = The weight decay rate
+        patience = The amount of epochs we are willing to wait for improvements to the 
+            validation loss before early stopping.
         generation_max_length = The max desired length for the desired output. Only used
             if we are in a seq2seq paradigm
         generation_num_beams = For beam search. Only used if we are in a seq2seq paradigm
@@ -214,7 +226,8 @@ class FineTuneLLM():
             eval_dataset = self.dataset['val'],
             data_collator = data_collator,
             compute_metrics = self._compute_metrics,
-            class_weights = self.class_weights
+            class_weights = self.class_weights,
+            callbacks = [EarlyStoppingCallback(early_stopping_patience = patience)]
         )
         
         trainer.train()
@@ -236,6 +249,7 @@ class FineTuneLLM():
         ----------
         card_tags = A generated set of tags for that card
         """
+        self.model.eval()
         inputs = self.tokenizer(card_text, return_tensors = 'pt').to(self.device)
 
         outputs = self.model(**inputs)
@@ -316,7 +330,8 @@ class FineTuneLLM():
         logits = np.nan_to_num(logits) # defensive clip
         labels = np.array(labels)
 
-        probs = 1 / (1 + np.exp(-logits))  # sigmoid
+        # probs = 1 / (1 + np.exp(-logits))  # sigmoid
+        probs = expit(logits) # safer logits calc
         preds = (probs > 0.5).astype(int)
 
         precision_micro, recall_micro, f1_micro, _ = precision_recall_fscore_support(

@@ -215,6 +215,7 @@ class ScryfallDataset():
     def load_hf_dataset(
         self, 
         train_path:str, val_path:str, test_path:str, 
+        class_weight_clipping:tuple[float] = (1.0, 10.0),
         verbose:bool = True
     ):
         """
@@ -225,6 +226,7 @@ class ScryfallDataset():
         Inputs
         ----------
         train_path, val_path, test_path = Where the key objects are stored
+        class_weight_clipping = The values to clip our class weights between
         verbose = If true, prints useful intermediates
 
         Returns
@@ -262,7 +264,7 @@ class ScryfallDataset():
 
         ## compute class weights as needed
         if self.task == 'multi_label_classification':
-            self._compute_class_weights()
+            self._compute_class_weights(clip_vals = class_weight_clipping)
 
         if verbose:
             print(f'Scryfall Tag {self.task.replace("_", " ").title()} Dataset Loaded')
@@ -276,7 +278,7 @@ class ScryfallDataset():
 
     # === Internal Methods ===
 
-    def _compute_class_weights(self):
+    def _compute_class_weights(self, clip_vals):
         """
         Description
         ----------
@@ -284,6 +286,7 @@ class ScryfallDataset():
 
         Inputs
         ----------
+        clip_vals = The values to clip our weights between
 
         Returns
         ----------
@@ -300,7 +303,10 @@ class ScryfallDataset():
 
         # inverse frequency (standard approach)
         self.class_weights = (total - counts) / (counts + 1e-6)
-        self.class_weights = np.clip(self.class_weights, 1.0, 20.0) # clamp weights
+        self.class_weights = np.clip(
+            self.class_weights, 
+            clip_vals[0], clip_vals[1]
+        ) # clamp weights
 
     def _reshape_to_question_answering(self, idx, card, tags):
         """

@@ -9,7 +9,7 @@ IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
 BUILD_DATASET = True
-TAG_SIZE = 500 # top n tags only, and only cards which contain at least one of those tags
+TAG_SIZE = 300 # top n tags only, and only cards which contain at least one of those tags
 DATASET_SIZE_N = None # Default = None, choose for max datasize
 TEST_SIZE_N = 50
 TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'multi_label_classification', 'seq2seq']
@@ -32,18 +32,18 @@ TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'm
 
 # === Multi-Label Classification ===
 # documentation = https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english
-MODEL_NAME = 'distilbert-base-uncased' # smaller
-# MODEL_NAME = 'microsoft/deberta-v3-base' # larger
+# MODEL_NAME = 'distilbert-base-uncased' # smaller
+MODEL_NAME = 'microsoft/deberta-v3-base' # larger
 
 # === Training ===
 MAX_INPUT_LENGTH = 512
 MAX_TARGET_LENGTH = 128
 BATCH_SIZE = 48 # 1 for local training, 8 for GPU
 
-LEARNING_RATE = 5e-4
+LEARNING_RATE = 3e-5 # distilbert is less sensitive (5e-4 okay), deberta is sensitive (2e-5)
 WEIGHT_DECAY = 0.01
 GRAD_ACCUMULATION_STEPS = 8 # useful if using accelerate
-NUM_EPOCHS = 20
+NUM_EPOCHS = 100
 
 GENERATION_MAX_LENGTH = 128
 GENERATION_NUM_BEAMS = 4
