@@ -32,15 +32,16 @@ TASK = 'multi_label_classification' # ['question_answering', 'summarization', 'm
 
 # === Multi-Label Classification ===
 # documentation = https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english
-# MODEL_NAME = 'distilbert-base-uncased' # smaller
-MODEL_NAME = 'microsoft/deberta-v3-base' # larger
+MODEL_NAME = 'distilbert-base-uncased' # smaller
+# MODEL_NAME = 'microsoft/deberta-v3-base' # larger
 
 # === Training ===
+TRAIN_MODEL = False
 MAX_INPUT_LENGTH = 512
 MAX_TARGET_LENGTH = 128
 BATCH_SIZE = 48 # 1 for local training, 8 for GPU
 
-LEARNING_RATE = 3e-5 # distilbert is less sensitive (5e-4 okay), deberta is sensitive (2e-5)
+LEARNING_RATE = 5e-4 # distilbert is less sensitive (5e-4 okay), deberta is sensitive (3e-5 works well)
 WEIGHT_DECAY = 0.01
 GRAD_ACCUMULATION_STEPS = 8 # useful if using accelerate
 NUM_EPOCHS = 100

@@ -116,6 +116,9 @@ class ScryfallDataset():
         if top_n_tags is not None:
             self.unique_tags = heapq.nlargest(top_n_tags, tag_counts.items(), key = lambda item: item[1])
             self.unique_tags = set(dict(self.unique_tags).keys())
+        
+        # save tag counts for QC purposes
+        self.tag_counts = tag_counts
 
         ## reshape tags to dict
         card_tags = {}

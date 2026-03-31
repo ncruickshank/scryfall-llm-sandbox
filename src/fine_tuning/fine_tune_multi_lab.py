@@ -21,6 +21,9 @@ import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 from scipy.special import expit 
 
+## project directory
+from .multi_lab_evaluator import MultiLabelEvaluator
+
 # classes
 class MultiLabelTrainer(Trainer):
     """
@@ -231,6 +234,7 @@ class FineTuneLLM():
         )
         
         trainer.train()
+        self.training_log_history = trainer.state.log_history
 
     def generate_tags(self, card_text:str, threshold = 0.4, top_k:int = 5):
         """
@@ -307,46 +311,62 @@ class FineTuneLLM():
 
         return model_inputs
     
+    # def _compute_metrics(self, eval_preds):
+    #     """
+    #     Description
+    #     ----------
+    #     Computes the metrics for each training and validation loop
+
+    #     Inputs
+    #     ----------
+    #     eval_preds = The outputs of the model we want to compute metrics for
+
+    #     Returns
+    #     ----------
+    #     micro_precision, micro_recall, micro_f1
+    #     """
+    #     logits, labels = eval_preds
+
+    #     if isinstance(logits, tuple):
+    #         logits = logits[0]
+
+    #     logits = np.array(logits)
+    #     logits = np.nan_to_num(logits) # defensive clip
+    #     labels = np.array(labels)
+
+    #     # probs = 1 / (1 + np.exp(-logits))  # sigmoid
+    #     probs = expit(logits) # safer logits calc
+    #     preds = (probs > 0.5).astype(int)
+
+    #     precision_micro, recall_micro, f1_micro, _ = precision_recall_fscore_support(
+    #         labels, preds, average = 'micro', zero_division = 0
+    #     )
+
+    #     precision_macro, recall_macro, f1_macro, _ = precision_recall_fscore_support(
+    #         labels, preds, average = 'macro', zero_division = 0 
+    #     )
+
+    #     return {
+    #         "micro_precision": precision_micro,
+    #         "micro_recall": recall_micro,
+    #         "micro_f1": f1_micro,
+    #         'macro_precision': precision_macro,
+    #         'macro_recall': recall_macro,
+    #         'macro_f1': f1_macro
+    #     }
+
     def _compute_metrics(self, eval_preds):
         """
-        Description
-        ----------
-        Computes the metrics for each training and validation loop
-
-        Inputs
-        ----------
-        eval_preds = The outputs of the model we want to compute metrics for
-
-        Returns
-        ----------
-        micro_precision, micro_recall, micro_f1
+        provided by ChatGPT to pair with MutliLabelEvaluator
         """
         logits, labels = eval_preds
 
         if isinstance(logits, tuple):
             logits = logits[0]
 
-        logits = np.array(logits)
-        logits = np.nan_to_num(logits) # defensive clip
-        labels = np.array(labels)
-
-        # probs = 1 / (1 + np.exp(-logits))  # sigmoid
-        probs = expit(logits) # safer logits calc
-        preds = (probs > 0.5).astype(int)
-
-        precision_micro, recall_micro, f1_micro, _ = precision_recall_fscore_support(
-            labels, preds, average = 'micro', zero_division = 0
+        evaluator = MultiLabelEvaluator(
+            thresholds=np.linspace(0.1, 0.9, 5),
+            k_values=[3, 5]
         )
 
-        precision_macro, recall_macro, f1_macro, _ = precision_recall_fscore_support(
-            labels, preds, average = 'macro', zero_division = 0 
-        )
-
-        return {
-            "micro_precision": precision_micro,
-            "micro_recall": recall_micro,
-            "micro_f1": f1_micro,
-            'macro_precision': precision_macro,
-            'macro_recall': recall_macro,
-            'macro_f1': f1_macro
-        }
+        return evaluator.evaluate(logits, labels)
