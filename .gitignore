@@ -205,3 +205,11 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+data/oracle-cards.json
+*.jpg
+reports/scryfall_tags.json
+*.json
+*.safetensors
+*.pt
+huggingface_token.txt
+/models
