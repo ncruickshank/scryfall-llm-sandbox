@@ -8,7 +8,7 @@ GET_IMAGES = True
 IMAGE_FOLDER = '../data/images'
 
 # === Modeling Params ===
-BUILD_DATASET = True
+BUILD_DATASET = False
 TAG_SIZE = 300 # top n tags only, and only cards which contain at least one of those tags
 DATASET_SIZE_N = None # Default = None, choose for max datasize
 TEST_SIZE_N = 50
