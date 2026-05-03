@@ -1,0 +1,19 @@
+# Notebook environment
+jupyter
+ipykernel
+
+# Core data and modeling
+numpy
+pandas
+scipy
+scikit-learn
+datasets
+transformers
+peft
+huggingface_hub
+torch
+
+# Scraping and HTTP
+selenium
+requests
+tqdm

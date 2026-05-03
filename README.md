@@ -2,6 +2,25 @@
 
 Experimental code for building a Magic: The Gathering card auto-tagger from Scryfall data and Scryfall Community tags.
 
+## Setup
+
+This project uses a standard Python dependency manifest: [`requirements.txt`](C:/Documents/GitHub/scryfall-llm-sandbox/requirements.txt).
+
+A dependency manifest is just a machine-readable list of packages the project needs in order to run. In Python, the most common simple format is `requirements.txt`, which lets you install the environment with a single command.
+
+Typical setup:
+
+```bash
+pip install -r requirements.txt
+```
+
+The manifest in this repo includes:
+
+- notebook tooling, because notebooks are part of the intended workflow
+- scraping dependencies
+- model training dependencies
+- Hugging Face and PyTorch dependencies
+
 ## Overview
 
 This repository is a sandbox for training a Hugging Face model to infer functional tags for Magic cards.
@@ -60,6 +79,50 @@ The exact formatting matters. The data pipeline in [`src/data_gathering/`](C:/Do
 - [`reports/`](C:/Documents/GitHub/scryfall-llm-sandbox/reports): scraped tag outputs and training logs
 - [`models/`](C:/Documents/GitHub/scryfall-llm-sandbox/models): saved fine-tuning outputs and checkpoints
 - [`notebooks/`](C:/Documents/GitHub/scryfall-llm-sandbox/notebooks): exploratory and workflow notebooks
+- [`scripts/`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts): reproducible script entrypoints that mirror the two primary notebook workflows
+
+## Canonical Run Order
+
+The recommended workflow for this repo is now:
+
+1. Install dependencies from [`requirements.txt`](C:/Documents/GitHub/scryfall-llm-sandbox/requirements.txt).
+2. Put the Scryfall bulk card dump in [`data/oracle-cards.json`](C:/Documents/GitHub/scryfall-llm-sandbox/data/oracle-cards.json).
+3. Set experiment parameters in [`src/config.py`](C:/Documents/GitHub/scryfall-llm-sandbox/src/config.py).
+4. Scrape community tags and optional images.
+5. Build the dataset splits.
+6. Fine-tune the multi-label classifier.
+7. Load the saved adapter for inference and evaluation.
+
+There are now two equally valid ways to follow that order:
+
+- notebook-first: use the notebooks in [`notebooks/`](C:/Documents/GitHub/scryfall-llm-sandbox/notebooks)
+- script-first: use the matching scripts in [`scripts/`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts)
+
+### Notebook-first workflow
+
+1. Run [`notebooks/scrape_scryfall.ipynb`](C:/Documents/GitHub/scryfall-llm-sandbox/notebooks/scrape_scryfall.ipynb).
+2. Run [`notebooks/scryfall_tag_multi-lab_class.ipynb`](C:/Documents/GitHub/scryfall-llm-sandbox/notebooks/scryfall_tag_multi-lab_class.ipynb).
+
+### Script-first workflow
+
+1. Run [`scripts/scrape_scryfall.py`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts/scrape_scryfall.py).
+2. Run [`scripts/train_multi_label_classifier.py`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts/train_multi_label_classifier.py).
+3. Run [`scripts/run_pretrained_multi_label.py`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts/run_pretrained_multi_label.py) to score withheld test cards or structured card text inputs with the pretrained adapter.
+
+### Hugging Face metadata helper
+
+If the Hugging Face repo contains only adapter artifacts, standalone inference
+needs a small label metadata file alongside the adapter.
+
+Use [`scripts/upload_hf_label_metadata.py`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts/upload_hf_label_metadata.py) to reconstruct and upload:
+
+- `n_labels`
+- `id2label`
+- `label2id`
+- `unique_tags`
+
+Once that file is uploaded as `label_metadata.json`, direct inference modes in
+[`scripts/run_pretrained_multi_label.py`](C:/Documents/GitHub/scryfall-llm-sandbox/scripts/run_pretrained_multi_label.py) can run without loading the local dataset.
 
 ## Pipeline
 
@@ -145,7 +208,8 @@ Typical generated outputs include:
 ## Notes
 
 - This repo is currently organized as an experiment workspace rather than a polished package.
-- Notebooks are part of the working process.
+- Notebooks are part of the working process and remain the primary development surface.
+- The `scripts/` layer is intentionally thin and mirrors the active notebook logic rather than replacing it.
 - Large generated artifacts may exist locally even if they are not intended to be committed long term.
 - Some archived code remains in `src/_archives/` for reference.
 
