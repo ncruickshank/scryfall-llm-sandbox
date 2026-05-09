@@ -213,3 +213,4 @@ reports/scryfall_tags.json
 *.pt
 huggingface_token.txt
 /models
+/data/card_images
