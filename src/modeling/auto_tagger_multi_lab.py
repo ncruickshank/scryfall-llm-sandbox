@@ -1,10 +1,12 @@
 # src/modeling/auto_tagger_multi_lab.py
 
 ## packages
+import json
+
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from peft import PeftModel
 import torch
-from huggingface_hub import get_full_repo_name
+from huggingface_hub import get_full_repo_name, hf_hub_download
 
 ## constants
 from ..config import MAX_INPUT_LENGTH
@@ -28,16 +30,20 @@ class ScryfallTaggerFromPretrained():
     def __init__(
         self,
         base_model_name:str,
-        n_labels:int,
         output_dir:str,
-        id2label:dict,
-        label2id:dict
+        n_labels:int = None,
+        id2label:dict = None,
+        label2id:dict = None
     ):
         super().__init__()
 
         # create objects to be used throughout
         self.repo_id = get_full_repo_name(output_dir)
         self.tokenizer = AutoTokenizer.from_pretrained(self.repo_id)
+
+        if (n_labels is None) or (id2label is None) or (label2id is None):
+            n_labels, id2label, label2id = self._load_label_metadata()
+
         base_model = AutoModelForSequenceClassification.from_pretrained(
             base_model_name,
             num_labels = n_labels,
@@ -53,6 +59,25 @@ class ScryfallTaggerFromPretrained():
 
         self.model.to(self.device)
         self.model.eval()
+
+    def _load_label_metadata(self):
+        """
+        Load label metadata from the Hugging Face repo when it has been uploaded
+        as a standalone artifact.
+        """
+        metadata_path = hf_hub_download(
+            repo_id = self.repo_id,
+            filename = 'label_metadata.json'
+        )
+
+        with open(metadata_path, 'r', encoding = 'utf-8') as f:
+            metadata = json.load(f)
+
+        n_labels = metadata['n_labels']
+        id2label = {int(k): v for k, v in metadata['id2label'].items()}
+        label2id = metadata['label2id']
+
+        return n_labels, id2label, label2id
 
     def generate_tags(
         self, 
