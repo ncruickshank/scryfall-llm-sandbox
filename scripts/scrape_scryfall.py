@@ -36,9 +36,9 @@ def _build_parser():
     parser = argparse.ArgumentParser(description = 'Scrape Scryfall tags and card images.')
     parser.add_argument(
         '--mode',
-        choices = ['tags', 'dataset-images'],
+        choices = ['tags', 'dataset-images', 'dataset-image-manifest'],
         default = 'tags',
-        help = 'Run the original tag scrape or only download dataset card images.'
+        help = 'Run the original tag scrape, only download dataset card images, or build an image-text manifest.'
     )
     parser.add_argument(
         '--card-data-path',
@@ -59,6 +59,11 @@ def _build_parser():
         '--image-type',
         default = 'png',
         help = 'Scryfall image type to download for dataset-images mode.'
+    )
+    parser.add_argument(
+        '--manifest-path',
+        default = _repo_path('../data/card_image_text_manifest.jsonl'),
+        help = 'Output path for the image-text manifest.'
     )
     parser.add_argument(
         '--train-path',
@@ -107,13 +112,29 @@ def main():
         print(f'Total Tags Scraped = {len(scraper.data)}')
         return
 
-    scraper.scrape_card_images_for_dataset(
+    if args.mode == 'dataset-images':
+        scraper.scrape_card_images_for_dataset(
+            card_data = sf.data,
+            split_paths = [args.train_path, args.val_path, args.test_path],
+            tag_path = args.tag_output_path,
+            output_folder = args.image_folder,
+            image_type = args.image_type,
+            max_download_time = MAX_LOAD_TIME
+        )
+        return
+
+    scraper.build_dataset_image_manifest(
         card_data = sf.data,
-        split_paths = [args.train_path, args.val_path, args.test_path],
+        split_paths = {
+            'train': args.train_path,
+            'val': args.val_path,
+            'test': args.test_path
+        },
         tag_path = args.tag_output_path,
-        output_folder = args.image_folder,
+        output_path = args.manifest_path,
+        image_folder = args.image_folder,
         image_type = args.image_type,
-        max_download_time = MAX_LOAD_TIME
+        project_root = str(PROJECT_ROOT)
     )
 
 

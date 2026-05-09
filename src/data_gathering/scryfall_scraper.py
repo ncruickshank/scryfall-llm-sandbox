@@ -259,6 +259,112 @@ class ScryfallScraper():
                 print(f'\t{key} = {val}')
 
         return summary
+
+    def build_dataset_image_manifest(
+        self,
+        card_data:list[dict],
+        split_paths:dict[str, str],
+        tag_path:str,
+        output_path:str = '../data/card_image_text_manifest.jsonl',
+        image_folder:str = '../data/card_images',
+        image_type:str = 'png',
+        project_root:str = None,
+        verbose:bool = True
+    ):
+        """
+        Description
+        ----------
+        Build a manifest pairing dataset target text with the expected local
+        card image path for image-to-text fine-tuning.
+
+        Inputs
+        ----------
+        card_data = Bulk Scryfall oracle card data.
+        split_paths = Mapping of split name to dataset JSON path.
+        tag_path = Path to the previously scraped Scryfall tags JSON.
+        output_path = Where to save the manifest file.
+        image_folder = Folder containing or expected to contain the images.
+        image_type = Scryfall image type used for the image download workflow.
+        project_root = Base directory used to store project-relative image paths.
+        verbose = If true, prints useful intermediates.
+
+        Returns
+        ----------
+        A dict summarizing manifest contents.
+        """
+        output_file = Path(output_path)
+        output_file.parent.mkdir(parents = True, exist_ok = True)
+
+        image_dir = Path(image_folder)
+        project_root_path = Path(project_root).resolve() if project_root is not None else Path.cwd().resolve()
+        split_data = self._load_split_records(split_paths = split_paths)
+        idx_to_oracle_id = self._build_dataset_index_to_oracle_id(
+            card_data = card_data,
+            split_paths = list(split_paths.values()),
+            tag_path = tag_path
+        )
+        oracle_id_to_card = {
+            card['oracle_id']: card for card in card_data
+            if 'oracle_id' in card
+        }
+
+        manifest_rows = []
+        missing_cards = 0
+        existing_images = 0
+        missing_images = 0
+
+        for split_name, records in split_data.items():
+            for record in records:
+                oracle_id = idx_to_oracle_id.get(record['id'])
+                card = oracle_id_to_card.get(oracle_id)
+                if (oracle_id is None) or (card is None):
+                    missing_cards += 1
+                    continue
+
+                image_url = self._get_card_image_url(card = card, image_type = image_type)
+                file_ext = self._infer_image_extension(image_url = image_url, image_type = image_type)
+                image_path = (image_dir / f'{oracle_id}.{file_ext}').resolve()
+                image_exists = image_path.exists()
+                try:
+                    relative_image_path = image_path.relative_to(project_root_path)
+                except ValueError:
+                    relative_image_path = image_path
+
+                if image_exists:
+                    existing_images += 1
+                else:
+                    missing_images += 1
+
+                manifest_rows.append({
+                    'id': record['id'],
+                    'oracle_id': oracle_id,
+                    'card_name': card['name'],
+                    'split': split_name,
+                    'image_path': str(relative_image_path).replace('\\', '/'),
+                    'image_type': image_type,
+                    'image_exists': image_exists,
+                    'target_text': record['document'],
+                    'tags': record['tags']
+                })
+
+        with open(output_file, 'w', encoding = 'utf-8') as f:
+            for row in manifest_rows:
+                f.write(json.dumps(row) + '\n')
+
+        summary = {
+            'manifest_path': str(output_file.resolve()),
+            'records': len(manifest_rows),
+            'existing_images': existing_images,
+            'missing_images': missing_images,
+            'missing_cards': missing_cards
+        }
+
+        if verbose:
+            print('Card image manifest built:')
+            for key, val in summary.items():
+                print(f'\t{key} = {val}')
+
+        return summary
     
     # === Internal Methods ===
     
@@ -396,33 +502,18 @@ class ScryfallScraper():
         assignment.
         """
         split_record_ids = set()
-        dataset_unique_tags = set()
-
-        for split_path in split_paths:
-            with open(split_path, 'r', encoding = 'utf-8') as f:
-                split_data = json.load(f)
-
-            for record in split_data:
+        split_data = self._load_split_records(
+            split_paths = {str(i): split_path for i, split_path in enumerate(split_paths)}
+        )
+        for records in split_data.values():
+            for record in records:
                 split_record_ids.add(record['id'])
-                dataset_unique_tags.update(record['tags'])
 
-        with open(tag_path, 'r', encoding = 'utf-8') as f:
-            card_tags_raw = json.load(f)
-
-        card_tags = {}
-        for card_tag_record in card_tags_raw:
-            for oracle_id, tags in card_tag_record.items():
-                trimmed_tags = [tag for tag in tags if tag in dataset_unique_tags]
-                if len(trimmed_tags) > 0:
-                    card_tags[oracle_id] = trimmed_tags
-
-        idx_to_oracle_id = {}
-        idx = 0
-        for card in card_data:
-            oracle_id = card.get('oracle_id')
-            if (oracle_id in card_tags) and ('oracle_text' in card):
-                idx_to_oracle_id[idx] = oracle_id
-                idx += 1
+        idx_to_oracle_id = self._build_dataset_index_to_oracle_id(
+            card_data = card_data,
+            split_paths = split_paths,
+            tag_path = tag_path
+        )
 
         missing_ids = [record_id for record_id in split_record_ids if record_id not in idx_to_oracle_id]
         if len(missing_ids) > 0:
@@ -459,3 +550,51 @@ class ScryfallScraper():
             return 'png'
 
         return 'jpg'
+
+    def _load_split_records(self, split_paths:dict[str, str]):
+        """
+        Load dataset split records keyed by split name.
+        """
+        out = {}
+        for split_name, split_path in split_paths.items():
+            with open(split_path, 'r', encoding = 'utf-8') as f:
+                out[split_name] = json.load(f)
+        return out
+
+    def _build_dataset_index_to_oracle_id(
+        self,
+        card_data:list[dict],
+        split_paths:list[str],
+        tag_path:str
+    ):
+        """
+        Replay the original dataset build order so saved dataset ids can be
+        mapped back to oracle ids.
+        """
+        dataset_unique_tags = set()
+        split_data = self._load_split_records(
+            split_paths = {str(i): split_path for i, split_path in enumerate(split_paths)}
+        )
+        for records in split_data.values():
+            for record in records:
+                dataset_unique_tags.update(record['tags'])
+
+        with open(tag_path, 'r', encoding = 'utf-8') as f:
+            card_tags_raw = json.load(f)
+
+        card_tags = {}
+        for card_tag_record in card_tags_raw:
+            for oracle_id, tags in card_tag_record.items():
+                trimmed_tags = [tag for tag in tags if tag in dataset_unique_tags]
+                if len(trimmed_tags) > 0:
+                    card_tags[oracle_id] = trimmed_tags
+
+        idx_to_oracle_id = {}
+        idx = 0
+        for card in card_data:
+            oracle_id = card.get('oracle_id')
+            if (oracle_id in card_tags) and ('oracle_text' in card):
+                idx_to_oracle_id[idx] = oracle_id
+                idx += 1
+
+        return idx_to_oracle_id
