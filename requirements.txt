@@ -12,6 +12,9 @@ transformers
 peft
 huggingface_hub
 torch
+pillow
+matplotlib
+accelerate
 
 # Scraping and HTTP
 selenium
