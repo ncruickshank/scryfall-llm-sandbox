@@ -11,10 +11,34 @@ from transformers import (
     VisionEncoderDecoderModel,
     set_seed,
 )
+from transformers.models.vision_encoder_decoder.configuration_vision_encoder_decoder import (
+    VisionEncoderDecoderConfig,
+)
 
 from .config import CardOCRTrainingConfig
 from .dataset import CardImageTextDataset, CardOCRDataCollator, load_manifest_records
 from .metrics import build_ocr_metrics
+
+
+def _ensure_vision_encoder_decoder_vocab_size_property():
+    """
+    PEFT save logic expects a top-level `config.vocab_size` on the config class when
+    it reloads the base config from the pretrained model id. VisionEncoderDecoderConfig
+    stores text vocab under `config.decoder.vocab_size`, so we bridge that gap here.
+    """
+    if isinstance(getattr(VisionEncoderDecoderConfig, "vocab_size", None), property):
+        return
+
+    def _get_vocab_size(self):
+        return self.decoder.vocab_size
+
+    def _set_vocab_size(self, value):
+        self.decoder.vocab_size = value
+
+    VisionEncoderDecoderConfig.vocab_size = property(_get_vocab_size, _set_vocab_size)
+
+
+_ensure_vision_encoder_decoder_vocab_size_property()
 
 
 class CardOCRFineTuner:
@@ -28,6 +52,7 @@ class CardOCRFineTuner:
         self.model = VisionEncoderDecoderModel.from_pretrained(config.base_model_name)
         self._configure_model()
         self._attach_lora()
+        self._sync_text_config_metadata()
 
         self.train_records = load_manifest_records(
             config.manifest_path,
@@ -94,7 +119,7 @@ class CardOCRFineTuner:
         )
         pixel_values = self.processor(images=image, return_tensors="pt").pixel_values.to(device)
         generated_ids = self.model.generate(
-            pixel_values,
+            pixel_values=pixel_values,
             max_length=self.config.generation_max_length,
             num_beams=self.config.generation_num_beams,
             interpolate_pos_encoding=self.config.interpolate_pos_encoding,
@@ -112,9 +137,9 @@ class CardOCRFineTuner:
         self.model.config.decoder_start_token_id = decoder_start_token_id
         self.model.config.pad_token_id = tokenizer.pad_token_id
         self.model.config.eos_token_id = tokenizer.eos_token_id
-        self.model.config.vocab_size = self.model.config.decoder.vocab_size
         self.model.generation_config.max_length = self.config.generation_max_length
         self.model.generation_config.num_beams = self.config.generation_num_beams
+        self._sync_text_config_metadata()
 
         if self.config.gradient_checkpointing:
             self.model.gradient_checkpointing_enable()
@@ -131,7 +156,33 @@ class CardOCRFineTuner:
             target_modules=target_modules,
         )
         self.model = get_peft_model(self.model, lora_config)
+        self._sync_text_config_metadata()
         self.model.print_trainable_parameters()
+
+    def _sync_text_config_metadata(self):
+        """
+        Keep a top-level vocab size synchronized for wrapped configs that expect it.
+        """
+        config_candidates = []
+
+        if hasattr(self.model, "config"):
+            config_candidates.append(self.model.config)
+        if hasattr(self.model, "base_model") and hasattr(self.model.base_model, "config"):
+            config_candidates.append(self.model.base_model.config)
+        if hasattr(self.model, "base_model") and hasattr(self.model.base_model, "model"):
+            base_wrapped_model = self.model.base_model.model
+            if hasattr(base_wrapped_model, "config"):
+                config_candidates.append(base_wrapped_model.config)
+
+        seen_config_ids = set()
+        for model_config in config_candidates:
+            config_id = id(model_config)
+            if config_id in seen_config_ids:
+                continue
+            seen_config_ids.add(config_id)
+
+            decoder_config = model_config.decoder
+            model_config.vocab_size = decoder_config.vocab_size
 
     def _discover_lora_target_modules(self) -> list[str]:
         suffixes = self.config.lora.target_module_suffixes

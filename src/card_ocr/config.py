@@ -39,15 +39,15 @@ class OCRLoRAConfig:
 @dataclass
 class CardOCRTrainingConfig:
     manifest_path: str = "data/card_image_text_manifest.jsonl"
-    base_model_name: str = "microsoft/trocr-base-printed"
+    base_model_name: str = "microsoft/trocr-small-printed"
     output_dir: str = "models/scryfall-card-ocr"
     image_height: int = 576
     image_width: int = 800
     interpolate_pos_encoding: bool = True
     max_target_length: int = 512
-    per_device_train_batch_size: int = 1
-    per_device_eval_batch_size: int = 1
-    gradient_accumulation_steps: int = 8
+    per_device_train_batch_size: int = 2
+    per_device_eval_batch_size: int = 2
+    gradient_accumulation_steps: int = 4
     num_train_epochs: float = 8.0
     learning_rate: float = 2e-4
     weight_decay: float = 0.01

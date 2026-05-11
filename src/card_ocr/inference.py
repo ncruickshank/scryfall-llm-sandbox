@@ -10,7 +10,7 @@ class ScryfallCardTextRecognizer:
     def __init__(
         self,
         adapter_dir: str,
-        base_model_name: str = "microsoft/trocr-base-printed",
+        base_model_name: str = "microsoft/trocr-small-printed",
         image_height: int = 576,
         image_width: int = 800,
         interpolate_pos_encoding: bool = True,
@@ -37,7 +37,7 @@ class ScryfallCardTextRecognizer:
         pixel_values = self.processor(images=image, return_tensors="pt").pixel_values.to(self.device)
         with torch.no_grad():
             generated_ids = self.model.generate(
-                pixel_values,
+                pixel_values=pixel_values,
                 max_length=max_length,
                 num_beams=num_beams,
                 interpolate_pos_encoding=self.interpolate_pos_encoding,

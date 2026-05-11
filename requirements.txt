@@ -15,8 +15,13 @@ torch
 pillow
 matplotlib
 accelerate
+sentencepiece
 
 # Scraping and HTTP
 selenium
 requests
 tqdm
+
+# Other
+tiktoken
+protobuf
