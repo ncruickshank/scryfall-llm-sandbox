@@ -19,6 +19,11 @@ import os
 ## project directory
 from ..utils.retry import retry
 
+SCRYFALL_DOWNLOAD_HEADERS = {
+    'User-Agent': 'scryfall-llm-sandbox/0.1 (local dataset image downloader)',
+    'Accept': 'image/*,*/*;q=0.8'
+}
+
 # class
 class ScryfallScraper():
     """
@@ -167,6 +172,7 @@ class ScryfallScraper():
         output_folder:str = '../data/card_images',
         image_type:str = 'png',
         max_download_time:float = 30.0,
+        request_delay_seconds:float = 0.1,
         verbose:bool = True
     ):
         """
@@ -184,6 +190,7 @@ class ScryfallScraper():
         image_type = Scryfall image type to download. Common values include
             'png', 'jpg', 'large', 'normal', and 'small'.
         max_download_time = Timeout in seconds for each image request.
+        request_delay_seconds = Delay between image requests.
         verbose = If true, prints useful intermediates.
 
         Returns
@@ -210,6 +217,7 @@ class ScryfallScraper():
 
         progress_bar = tqdm(cards_to_download, desc = 'Downloading card images')
         session = requests.Session()
+        session.headers.update(SCRYFALL_DOWNLOAD_HEADERS)
 
         for card in progress_bar:
             oracle_id = card['oracle_id']
@@ -226,6 +234,9 @@ class ScryfallScraper():
                 continue
 
             try:
+                if request_delay_seconds > 0:
+                    time.sleep(request_delay_seconds)
+
                 response = retry(
                     lambda: session.get(image_url, timeout = max_download_time),
                     retries = 3,
@@ -242,7 +253,8 @@ class ScryfallScraper():
             except Exception as e:
                 failed += 1
                 if verbose:
-                    print(f'FAILED IMAGE: {card["name"]} ({oracle_id}) - {e}')
+                    details = self._get_response_error_details(e)
+                    print(f'FAILED IMAGE: {card["name"]} ({oracle_id}) - {e}{details}')
 
         summary = {
             'target_cards': len(cards_to_download),
@@ -259,6 +271,23 @@ class ScryfallScraper():
                 print(f'\t{key} = {val}')
 
         return summary
+
+    def _get_response_error_details(self, error:Exception):
+        """
+        Return a short Scryfall error detail when a failed response includes one.
+        """
+        response = getattr(error, 'response', None)
+        if response is None:
+            return ''
+
+        try:
+            payload = response.json()
+        except ValueError:
+            detail = response.text[:200].strip()
+            return f' - {detail}' if detail else ''
+
+        detail = payload.get('details') or payload.get('code')
+        return f' - {detail}' if detail else ''
 
     def build_dataset_image_manifest(
         self,
