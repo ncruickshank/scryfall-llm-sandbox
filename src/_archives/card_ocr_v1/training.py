@@ -15,8 +15,8 @@ from transformers.models.vision_encoder_decoder.configuration_vision_encoder_dec
     VisionEncoderDecoderConfig,
 )
 
-from .config import CardOCRTrainingConfig
-from .dataset import CardImageTextDataset, CardOCRDataCollator, load_manifest_records
+from ...ocr.config import CardOCRTrainingConfig
+from ...ocr.input_dataset import CardImageTextDataset, CardOCRDataCollator, load_manifest_records
 from .metrics import build_ocr_metrics
 
 

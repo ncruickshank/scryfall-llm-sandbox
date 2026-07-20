@@ -53,3 +53,7 @@ GENERATION_MAX_LENGTH = 128
 GENERATION_NUM_BEAMS = 4
 
 OUTPUT_DIR = 'scryfall-auto-tagger' # be sure to create on the hub first
+
+# === OCR Parameters ===
+USE_GRANITE = False # default to False
+OCR_FILENAME = 'card_image_ocr_text_tags.json'

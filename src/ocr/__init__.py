@@ -1,13 +1,13 @@
 from .config import CardOCRTrainingConfig, OCRAugmentationConfig, OCRLoRAConfig
-from .dataset import (
+from .input_dataset import (
     CardImageTextDataset,
     CardOCRDataCollator,
     load_manifest_records,
     normalize_target_text,
     summarize_manifest,
 )
-from .inference import ScryfallCardTextRecognizer
-from .training import CardOCRFineTuner
+# from .._archives.card_ocr_v1.inference import ScryfallCardTextRecognizer
+# from .._archives.card_ocr_v1.training import CardOCRFineTuner
 
 __all__ = [
     "CardOCRTrainingConfig",
@@ -18,6 +18,4 @@ __all__ = [
     "load_manifest_records",
     "normalize_target_text",
     "summarize_manifest",
-    "ScryfallCardTextRecognizer",
-    "CardOCRFineTuner",
 ]
