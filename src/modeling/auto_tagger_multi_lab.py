@@ -11,6 +11,14 @@ from huggingface_hub import get_full_repo_name, hf_hub_download
 ## constants
 from ..config import MAX_INPUT_LENGTH
 
+def get_device_and_dtype():
+    if torch.backends.mps.is_available():
+        return torch.device("mps"), torch.float16
+    if torch.cuda.is_available():
+        return torch.device("cuda"), torch.float16
+    return torch.device("cpu"), torch.float32
+DEVICE, DTYPE = get_device_and_dtype()
+
 ## class
 class ScryfallTaggerFromPretrained():
     """
@@ -50,7 +58,7 @@ class ScryfallTaggerFromPretrained():
             problem_type = 'multi_label_classification'
         )
         self.model = PeftModel.from_pretrained(base_model, self.repo_id)
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = DEVICE # torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model.config.id2label = id2label
         self.model.config.label2id = label2id
 

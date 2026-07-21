@@ -319,9 +319,9 @@ class ScryfallDataset():
 
         # split data into train test val
         datasets = {}
-        datasets['train'] = [c for c in data if c['split'] == 'train']
-        datasets['val'] = [c for c in data if c['split'] == 'val']
-        datasets['test'] = [c for c in data if c['split'] == 'test']
+        datasets['train'] = [c for c in data if c['split'] == 'train'][:100]
+        datasets['val'] = [c for c in data if c['split'] == 'val'][:10]
+        datasets['test'] = [c for c in data if c['split'] == 'test'][:3]
 
         # store the output as a huggingface dataset
         dataset_dict = DatasetDict()
@@ -341,7 +341,7 @@ class ScryfallDataset():
             if self.unique_tags is not None:
                 print(f'\tCount Unique Tags = {len(self.unique_tags)}')
 
-        del output, dataset_dict
+        del datasets, dataset_dict
 
     # === Internal Methods ===
 

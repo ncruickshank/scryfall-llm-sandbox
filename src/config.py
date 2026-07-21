@@ -66,6 +66,7 @@ GENERATION_MAX_LENGTH = 128
 GENERATION_NUM_BEAMS = 4
 
 # be sure to create on the hub first
+HF_USER_NAME = 'ncruickshank'
 # OUTPUT_DIR = 'scryfall-auto-tagger' # for the structured card-text model version
 OUTPUT_DIR = 'scryfall-auto-tagger-ocr' # for the OCR-generated card-text model version
 
