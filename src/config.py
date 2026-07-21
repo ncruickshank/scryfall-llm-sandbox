@@ -51,6 +51,7 @@ MODEL_NAME = 'distilbert-base-uncased' # smaller
 # MODEL_NAME = 'microsoft/deberta-v3-base' # larger
 
 # --- Training ---
+TEXT_COLUMN = 'card_text_ocr' # 'document' for structured scryfall text, 'card_text_ocr' for ocr-derived text
 TRAIN_MODEL = True
 MAX_INPUT_LENGTH = 512
 MAX_TARGET_LENGTH = 128

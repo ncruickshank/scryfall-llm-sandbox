@@ -24,6 +24,17 @@ from scipy.special import expit
 ## project directory
 from .multi_lab_evaluator import MultiLabelEvaluator
 
+# constants
+def get_device_and_dtype():
+    if torch.backends.mps.is_available():
+        return torch.device("mps"), torch.float16
+    if torch.cuda.is_available():
+        return torch.device("cuda"), torch.float16
+    return torch.device("cpu"), torch.float32
+DEVICE, DTYPE = get_device_and_dtype()
+
+from ..config import TEXT_COLUMN
+
 # classes
 class MultiLabelTrainer(Trainer):
     """
@@ -120,7 +131,7 @@ class FineTuneLLM():
         self.model.print_trainable_parameters()
 
         # connect to device
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = DEVICE # torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model.to(self.device)
 
         # instantiate objects to be populated later
@@ -245,7 +256,8 @@ class FineTuneLLM():
 
         Inputs
         ----------
-        card_text = The text data (as structured in scryfall_dataset.py)
+        card_text = The text data (as structured in scryfall_dataset.py) or as retrieved
+            from the OCR script
         threshold = Confidence per tag predicition required to output
         top_k = The number of tags we want to return, in order of confidence
 
@@ -295,7 +307,7 @@ class FineTuneLLM():
         model_inputs = The tokenized example
         """
         model_inputs = self.tokenizer(
-            example['document'],
+            example[TEXT_COLUMN],
             max_length = max_input_length,
             truncation = True,
             padding = False
