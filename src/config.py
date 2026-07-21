@@ -1,11 +1,14 @@
 # === Scryfall Tag Scraping Params ===
+SCRAPE_MODE = 'dataset-images' # ['tags', 'dataset-images', 'dataset-image-manifest']
 TOTAL_CARDS = 10000 # Use None for all cards
 RATE_LIMIT_SECONDS = 2.5 # number of seconds to wait after loading a page
 MAX_LOAD_TIME = 15 # max seconds to wait for any given operation
 SAVE_TAGS_EVERY = 100 # how often to save outputs
 OUTPUT_PATH = '../reports/scryfall_tags.json'
-GET_IMAGES = True
-IMAGE_FOLDER = '../data/images'
+GET_IMAGES = False
+IMAGE_FOLDER = '../data/card_images'
+IMAGE_TYPE = 'png'
+IMAGE_DOWNLOAD_DELAY_SECONDS = 0.1
 
 # === Modeling Params ===
 BUILD_DATASET = False
@@ -50,3 +53,7 @@ GENERATION_MAX_LENGTH = 128
 GENERATION_NUM_BEAMS = 4
 
 OUTPUT_DIR = 'scryfall-auto-tagger' # be sure to create on the hub first
+
+# === OCR Parameters ===
+USE_GRANITE = False # default to False
+OCR_FILENAME = 'card_image_ocr_text_tags.json'

@@ -19,7 +19,8 @@ if str(PROJECT_ROOT) not in sys.path:
 ## from project directory
 from src.config import TOTAL_CARDS
 from src.config import RATE_LIMIT_SECONDS, MAX_LOAD_TIME
-from src.config import SAVE_TAGS_EVERY, GET_IMAGES, OUTPUT_PATH, IMAGE_FOLDER
+from src.config import SAVE_TAGS_EVERY, GET_IMAGES, OUTPUT_PATH, IMAGE_FOLDER, IMAGE_TYPE, SCRAPE_MODE
+from src.config import IMAGE_DOWNLOAD_DELAY_SECONDS
 from src.data_gathering.scryfall import Scryfall
 from src.data_gathering.scryfall_scraper import ScryfallScraper
 
@@ -37,7 +38,7 @@ def _build_parser():
     parser.add_argument(
         '--mode',
         choices = ['tags', 'dataset-images', 'dataset-image-manifest'],
-        default = 'tags',
+        default = SCRAPE_MODE,
         help = 'Run the original tag scrape, only download dataset card images, or build an image-text manifest.'
     )
     parser.add_argument(
@@ -52,12 +53,12 @@ def _build_parser():
     )
     parser.add_argument(
         '--image-folder',
-        default = _repo_path('../data/card_images'),
+        default = _repo_path(IMAGE_FOLDER),
         help = 'Output folder for downloaded dataset card images.'
     )
     parser.add_argument(
         '--image-type',
-        default = 'png',
+        default = IMAGE_TYPE,
         help = 'Scryfall image type to download for dataset-images mode.'
     )
     parser.add_argument(
@@ -119,7 +120,8 @@ def main():
             tag_path = args.tag_output_path,
             output_folder = args.image_folder,
             image_type = args.image_type,
-            max_download_time = MAX_LOAD_TIME
+            max_download_time = MAX_LOAD_TIME,
+            request_delay_seconds = IMAGE_DOWNLOAD_DELAY_SECONDS
         )
         return
 
