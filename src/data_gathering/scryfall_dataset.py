@@ -302,7 +302,6 @@ class ScryfallDataset():
         ----------
 
         """
-        output = []
         all_tags = []
         with open(filepath, 'r') as f:
             data = json.load(f)
@@ -319,11 +318,14 @@ class ScryfallDataset():
         self.id2label = {i: tag for tag, i in self.label2id.items()}
 
         # split data into train test val
-        assert 1==0, 'TODO: split into [train, test, val] once you have the splits in the data'
+        datasets = {}
+        datasets['train'] = [c for c in data if c['split'] == 'train']
+        datasets['val'] = [c for c in data if c['split'] == 'val']
+        datasets['test'] = [c for c in data if c['split'] == 'test']
 
         # store the output as a huggingface dataset
         dataset_dict = DatasetDict()
-        for name, data in output.items():
+        for name, data in datasets.items():
             dataset_dict[name] = Dataset.from_list(data)
         self.dataset = dataset_dict
 
@@ -332,7 +334,7 @@ class ScryfallDataset():
             self._compute_class_weights(clip_vals = class_weight_clipping)
 
         if verbose:
-            print(f'Scryfall Tag {self.task.replace("_", " ").title()} Dataset Loaded')
+            print(f'Scryfall OCR-To-Tag {self.task.replace("_", " ").title()} Dataset Loaded')
             print(f'\tTrain Records = {self.dataset['train'].num_rows}')
             print(f'\tVal Records = {self.dataset['val'].num_rows}')
             print(f'\tTest Records = {self.dataset['test'].num_rows}')

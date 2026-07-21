@@ -86,6 +86,12 @@ def main():
             test_path = _repo_path(f'../data/scryfall_{TASK}_test.json')
         )
 
+    elif DATASET_SOURCE == 'load_from_ocr':
+        # assumes we have ran the scripts/generate_card_text_ocr_dataset.py
+        sf.load_hf_dataset_ocr(
+            filepath = _repo_path('../data/card_image_ocr_text_tags.json')
+        )
+
     if TRAIN_MODEL:
         tagger_ft = FineTuneLLM(
             model_name = MODEL_NAME,
