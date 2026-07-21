@@ -16,6 +16,8 @@ Pre Run Checklist:
     training dataset they belong to.
 2. Review the src/config.py file for relevant parameters for this training set.
     Should only be USE_GRANITE or not (default False is fine).
+
+Last ran: 2026-07-20
 """
 
 # ---------- packages, config, and data ---------------------------------------
