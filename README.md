@@ -222,3 +222,30 @@ Possible next steps for the project include:
 - documenting dataset assumptions and tag cleanup rules in more detail
 - adding evaluation summaries and example predictions to the repo
 - comparing DistilBERT against larger encoder models
+
+---
+
+# OCR-Derived Card Text Fine Tuning Training Process
+
+
+Epoch | train_loss | val_loss | best_thresh | macro_f1 | p@5 | eval_runtime
+------|------------|----------|-------------|----------|-----|--------------
+Epoch 1 | train_loss=0.3798 | val_loss=0.3492 | best_thresh=0.10 | macro_f1=0.0321 | p@5=0.1757 | eval_runtime=7.0978
+Epoch 2 | train_loss=0.3334 | val_loss=0.2920 | best_thresh=0.10 | macro_f1=0.0594 | p@5=0.2564 | eval_runtime=7.4033
+Epoch 3 | train_loss=0.2656 | val_loss=0.2324 | best_thresh=0.30 | macro_f1=0.1557 | p@5=0.3586 | eval_runtime=7.5283
+Epoch 4 | train_loss=0.2153 | val_loss=0.2030 | best_thresh=0.50 | macro_f1=0.2305 | p@5=0.4060 | eval_runtime=7.6522
+Epoch 5 | train_loss=0.1848 | val_loss=0.1862 | best_thresh=0.50 | macro_f1=0.2852 | p@5=0.4365 | eval_runtime=9.3552
+Epoch 6 | train_loss=0.1636 | val_loss=0.1736 | best_thresh=0.50 | macro_f1=0.3207 | p@5=0.4642 | eval_runtime=7.0761
+Epoch 7 | train_loss=0.1476 | val_loss=0.1650 | best_thresh=0.70 | macro_f1=0.3532 | p@5=0.4770 | eval_runtime=7.4442
+Epoch 8 | train_loss=0.1338 | val_loss=0.1581 | best_thresh=0.70 | macro_f1=0.3692 | p@5=0.4827 | eval_runtime=7.4512
+Epoch 9 | train_loss=0.1233 | val_loss=0.1554 | best_thresh=0.70 | macro_f1=0.3888 | p@5=0.5020 | eval_runtime=8.1040
+Epoch 10 | train_loss=0.1145 | val_loss=0.1496 | best_thresh=0.70 | macro_f1=0.4054 | p@5=0.5033 | eval_runtime=7.5624
+Epoch 11 | train_loss=0.1070 | val_loss=0.1496 | best_thresh=0.70 | macro_f1=0.4151 | p@5=0.5176 | eval_runtime=7.0773
+Epoch 12 | train_loss=0.0993 | val_loss=0.1466 | best_thresh=0.70 | macro_f1=0.4340 | p@5=0.5201 | eval_runtime=7.5128
+Epoch 13 | train_loss=0.0932 | val_loss=0.1474 | best_thresh=0.70 | macro_f1=0.4413 | p@5=0.5248 | eval_runtime=7.4633
+Epoch 14 | train_loss=0.0885 | val_loss=0.1446 | best_thresh=0.70 | macro_f1=0.4496 | p@5=0.5285 | eval_runtime=7.6448
+Epoch 15 | train_loss=0.0846 | val_loss=0.1447 | best_thresh=0.70 | macro_f1=0.4584 | p@5=0.5320 | eval_runtime=7.4468
+Epoch 16 | train_loss=0.0800 | val_loss=0.1448 | best_thresh=0.70 | macro_f1=0.4656 | p@5=0.5376 | eval_runtime=7.5346
+Epoch 17 | train_loss=0.0768 | val_loss=0.1458 | best_thresh=0.70 | macro_f1=0.4682 | p@5=0.5383 | eval_runtime=7.5224
+Epoch 18 | train_loss=0.0722 | val_loss=0.1452 | best_thresh=0.70 | macro_f1=0.4751 | p@5=0.5435 | eval_runtime=7.4464
+Epoch 19 | train_loss=0.0693 | val_loss=0.1451 | best_thresh=0.70 | macro_f1=0.4753 | p@5=0.5448 | eval_runtime=7.4978

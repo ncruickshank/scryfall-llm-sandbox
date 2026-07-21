@@ -319,9 +319,9 @@ class ScryfallDataset():
 
         # split data into train test val
         datasets = {}
-        datasets['train'] = [c for c in data if c['split'] == 'train'][:100]
-        datasets['val'] = [c for c in data if c['split'] == 'val'][:10]
-        datasets['test'] = [c for c in data if c['split'] == 'test'][:3]
+        datasets['train'] = [c for c in data if c['split'] == 'train']
+        datasets['val'] = [c for c in data if c['split'] == 'val']
+        datasets['test'] = [c for c in data if c['split'] == 'test']
 
         # store the output as a huggingface dataset
         dataset_dict = DatasetDict()
