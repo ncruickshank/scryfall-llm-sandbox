@@ -39,7 +39,7 @@ OCR_FILENAME = 'card_image_ocr_text_tags.json'
 # =============================================================================
 
 # --- Modeling Params ---
-BUILD_DATASET = False
+DATASET_SOURCE = 'load_from_ocr' # ['build_from_scryfall', 'load_from_scryfall', 'load_from_ocr']
 TAG_SIZE = 300 # top n tags only, and only cards which contain at least one of those tags
 DATASET_SIZE_N = None # Default = None, choose for max datasize
 TEST_SIZE_N = 50
@@ -71,6 +71,9 @@ OUTPUT_DIR = 'scryfall-auto-tagger-ocr' # for the OCR-generated card-text model 
 # =============================================================================
 # ========== Graveyard ========================================================
 # =============================================================================
+
+# --- Modeling Params ---
+# BUILD_DATASET = False
 
 # --- Question Asnwering ---
 # # documentation = https://huggingface.co/distilbert/distilbert-base-cased-distilled-squad

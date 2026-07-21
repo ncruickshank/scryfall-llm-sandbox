@@ -1,6 +1,12 @@
 """
 Mirror of notebooks/scryfall_tag_multi-lab_class.ipynb for the active
 multi-label classification path.
+
+NOTE
+- DATASET_SOURCE ['build_from_scryfall', 'load_from_scryfall'] are intended
+    to be used to generate the fine tuned model based on *structured scryfall
+    text*. Wherease DATASET_SOURCE 'load_from_ocr' is intended to be used t
+    to generated a fine tuned model based on *ocr-sourced text*
 """
 
 # packages
@@ -17,7 +23,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 ## data gathering
-from src.config import BUILD_DATASET, TASK, TAG_SIZE, DATASET_SIZE_N, TEST_SIZE_N
+from src.config import DATASET_SOURCE, TASK, TAG_SIZE, DATASET_SIZE_N, TEST_SIZE_N
 from src.config import MAX_INPUT_LENGTH
 
 ## modeling
@@ -60,8 +66,9 @@ def main():
     # get data
     sf = ScryfallDataset(task = TASK)
 
-    # build dataset as needed
-    if BUILD_DATASET:
+    
+    if DATASET_SOURCE == 'build_from_scryfall':
+        # build dataset as needed
         sf.build_dataset(
             card_path = _repo_path('../data/oracle-cards.json'),
             tag_path = _repo_path('../reports/scryfall_tags.json'),
@@ -71,12 +78,13 @@ def main():
             top_n_tags = TAG_SIZE
         )
 
-    # load dataset
-    sf.load_hf_dataset(
-        train_path = _repo_path(f'../data/scryfall_{TASK}_train.json'),
-        val_path = _repo_path(f'../data/scryfall_{TASK}_val.json'),
-        test_path = _repo_path(f'../data/scryfall_{TASK}_test.json')
-    )
+    elif DATASET_SOURCE == 'load_from_scryfall':
+        # assumes we have previously used DATASET_SOURCE == 'build_from_scryfall'
+        sf.load_hf_dataset(
+            train_path = _repo_path(f'../data/scryfall_{TASK}_train.json'),
+            val_path = _repo_path(f'../data/scryfall_{TASK}_val.json'),
+            test_path = _repo_path(f'../data/scryfall_{TASK}_test.json')
+        )
 
     if TRAIN_MODEL:
         tagger_ft = FineTuneLLM(
