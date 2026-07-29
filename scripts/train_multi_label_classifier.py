@@ -1,6 +1,15 @@
 """
 Mirror of notebooks/scryfall_tag_multi-lab_class.ipynb for the active
 multi-label classification path.
+
+If you are training the structred scryfall text version of the model:
+- config / DATASET_SOURCE should be in ['build_from_scryfall', 
+    'load_from_scryfall']
+- config / TEXT_COLUMN should be 'document'
+
+If you are training the OCR-derived text version of the model:
+- config / DATASET_SOURCE should be 'load_from_ocr'
+- config / TEXT_COLUMN should be 'card_text_ocr'
 """
 
 # packages
@@ -17,7 +26,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 ## data gathering
-from src.config import BUILD_DATASET, TASK, TAG_SIZE, DATASET_SIZE_N, TEST_SIZE_N
+from src.config import DATASET_SOURCE, TASK, TAG_SIZE, DATASET_SIZE_N, TEST_SIZE_N
 from src.config import MAX_INPUT_LENGTH
 
 ## modeling
@@ -25,7 +34,14 @@ from src.config import MODEL_NAME, TRAIN_MODEL
 from src.config import BATCH_SIZE, LEARNING_RATE, WEIGHT_DECAY, NUM_EPOCHS
 
 ## save model
-from src.config import OUTPUT_DIR
+from src.config import HF_USER_NAME, OUTPUT_DIR
+if DATASET_SOURCE == 'load_from_ocr':
+    MODEL_PATH = 'scryfall_auto_tagger_ocr'
+else:
+    MODEL_PATH = 'scryfall_auto_tagger'
+
+## huggingface
+from huggingface_hub import create_repo, upload_folder
 
 ## project modules
 from src.data_gathering.scryfall_dataset import ScryfallDataset
@@ -60,8 +76,9 @@ def main():
     # get data
     sf = ScryfallDataset(task = TASK)
 
-    # build dataset as needed
-    if BUILD_DATASET:
+    
+    if DATASET_SOURCE == 'build_from_scryfall':
+        # build dataset as needed
         sf.build_dataset(
             card_path = _repo_path('../data/oracle-cards.json'),
             tag_path = _repo_path('../reports/scryfall_tags.json'),
@@ -71,12 +88,19 @@ def main():
             top_n_tags = TAG_SIZE
         )
 
-    # load dataset
-    sf.load_hf_dataset(
-        train_path = _repo_path(f'../data/scryfall_{TASK}_train.json'),
-        val_path = _repo_path(f'../data/scryfall_{TASK}_val.json'),
-        test_path = _repo_path(f'../data/scryfall_{TASK}_test.json')
-    )
+    elif DATASET_SOURCE == 'load_from_scryfall':
+        # assumes we have previously used DATASET_SOURCE == 'build_from_scryfall'
+        sf.load_hf_dataset(
+            train_path = _repo_path(f'../data/scryfall_{TASK}_train.json'),
+            val_path = _repo_path(f'../data/scryfall_{TASK}_val.json'),
+            test_path = _repo_path(f'../data/scryfall_{TASK}_test.json')
+        )
+
+    elif DATASET_SOURCE == 'load_from_ocr':
+        # assumes we have ran the scripts/generate_card_text_ocr_dataset.py
+        sf.load_hf_dataset_ocr(
+            filepath = _repo_path('../data/card_image_ocr_text_tags.json')
+        )
 
     if TRAIN_MODEL:
         tagger_ft = FineTuneLLM(
@@ -97,10 +121,26 @@ def main():
             n_epochs = NUM_EPOCHS,
             learning_rate = LEARNING_RATE,
             weight_decay = WEIGHT_DECAY,
-            output_dir = _repo_path('../models/scryfall_auto_tagger')
+            output_dir = _repo_path(f'../models/{MODEL_PATH}')
         )
 
         _save_training_log(tagger_ft)
+
+    # save to the hub
+    repo_id = f'{HF_USER_NAME}/{OUTPUT_DIR}'
+    create_repo(
+        repo_id = repo_id,
+        repo_type = 'model',
+        exist_ok = True 
+    )
+
+    upload_folder(
+        folder_path = _repo_path(f'../models/{MODEL_PATH}'),
+        repo_id = repo_id,
+        repo_type = 'model'
+    )
+    print(f'Uploaded model to https://huggingface.co/{repo_id}')
+
 
     # load model and validate the saved adapter path
     tagger = ScryfallTaggerFromPretrained(

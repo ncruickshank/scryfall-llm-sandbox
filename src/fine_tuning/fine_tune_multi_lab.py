@@ -12,6 +12,8 @@ from transformers import TrainingArguments
 from transformers import DataCollatorWithPadding
 from transformers import Trainer
 from transformers import EarlyStoppingCallback
+from transformers.trainer_callback import ProgressCallback
+from transformers import TrainerCallback
 
 ## lora
 from peft import LoraConfig, get_peft_model
@@ -20,9 +22,22 @@ from peft import LoraConfig, get_peft_model
 import numpy as np
 from sklearn.metrics import precision_recall_fscore_support
 from scipy.special import expit 
+from pathlib import Path
+import json
 
 ## project directory
 from .multi_lab_evaluator import MultiLabelEvaluator
+
+# constants
+def get_device_and_dtype():
+    if torch.backends.mps.is_available():
+        return torch.device("mps"), torch.float16
+    if torch.cuda.is_available():
+        return torch.device("cuda"), torch.float16
+    return torch.device("cpu"), torch.float32
+DEVICE, DTYPE = get_device_and_dtype()
+
+from ..config import TEXT_COLUMN
 
 # classes
 class MultiLabelTrainer(Trainer):
@@ -51,6 +66,35 @@ class MultiLabelTrainer(Trainer):
         loss = loss_fct(logits, labels.float())
 
         return (loss, outputs) if return_outputs else loss
+
+class EpochSummaryCallback(TrainerCallback):
+    """
+    Print a concise summary after each evaluation epoch.
+    """
+
+    def on_evaluate(self, args, state, control, metrics=None, **kwargs):
+        if metrics is None:
+            return control
+
+        epoch = metrics.get("epoch", state.epoch)
+
+        train_loss = None
+        for log in reversed(state.log_history):
+            if "loss" in log and "eval_loss" not in log:
+                train_loss = log["loss"]
+                break
+
+        print(
+            f"Epoch {epoch:.0f} | "
+            f"train_loss={train_loss:.4f} | "
+            f"val_loss={metrics['eval_loss']:.4f} | "
+            f"best_thresh={metrics['eval_best_threshold']:.2f} | "
+            f"macro_f1={metrics['eval_best_macro_f1']:.4f} | "
+            f"p@5={metrics['eval_precision@5']:.4f} | "
+            f"eval_runtime={metrics['eval_runtime']:.4f}"
+        )
+
+        return control
 
 class FineTuneLLM():
     """
@@ -88,7 +132,8 @@ class FineTuneLLM():
         self.model = AutoModelForSequenceClassification.from_pretrained(
             model_name,
             num_labels = n_labels,
-            problem_type = 'multi_label_classification'
+            problem_type = 'multi_label_classification',
+            attn_implementation = 'eager' if DEVICE == 'mps' else 'sdpa'
         )
 
         # update model multi-lab components
@@ -119,8 +164,11 @@ class FineTuneLLM():
         self.model = get_peft_model(self.model, lora_config, 'default')
         self.model.print_trainable_parameters()
 
+        # enable requires grad
+        self.model.enable_input_require_grads()
+
         # connect to device
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.device = DEVICE # torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         self.model.to(self.device)
 
         # instantiate objects to be populated later
@@ -196,13 +244,18 @@ class FineTuneLLM():
             num_train_epochs = n_epochs,
             
             # logging_dir = '../logs',
-            logging_steps = 1,
+            logging_strategy = 'epoch',
+            # logging_steps = 1,
             learning_rate = learning_rate,
             weight_decay = weight_decay,
             fp16 = False, # torch.cuda.is_available(),
+            disable_tqdm=False,
+            report_to="none",
+            log_level="error",
             
             # gradient checkpointing
             gradient_checkpointing = True, # trades compute for memory (allows larger batch sizes)
+            gradient_checkpointing_kwargs={"use_reentrant": False},
             
             # evaluation
             eval_strategy = 'epoch',
@@ -214,6 +267,9 @@ class FineTuneLLM():
             # best model tracking
             load_best_model_at_end = True,
             metric_for_best_model = 'eval_loss',
+
+            # other
+            dataloader_pin_memory = False,
         )
 
         # data collator
@@ -221,7 +277,8 @@ class FineTuneLLM():
         data_collator = DataCollatorWithPadding(tokenizer = self.tokenizer)
 
         # train the model
-        print("Using device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU")
+        # print("Using device:", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU")
+        print(f'Using device: {self.device}')
         trainer = MultiLabelTrainer(
             model = self.model,
             args = training_args,
@@ -230,11 +287,38 @@ class FineTuneLLM():
             data_collator = data_collator,
             compute_metrics = self._compute_metrics,
             class_weights = self.class_weights,
-            callbacks = [EarlyStoppingCallback(early_stopping_patience = patience)]
+            callbacks=[
+                EarlyStoppingCallback(early_stopping_patience=patience),
+                EpochSummaryCallback(),
+            ]
         )
+
+        # if training in the terminal, this is a helpful removal
+        trainer.remove_callback(ProgressCallback)
         
         trainer.train()
+
+        # save relevant objects
+
+        ## save best LoRA adapter
+        trainer.model.save_pretrained(output_dir)
+
+        ## save tokenizer
+        self.tokenizer.save_pretrained(output_dir)
+
+        ## save label metadata
+        metadata = {
+            'n_labels': len(self.id2label),
+            'id2label': self.id2label,
+            'label2id': self.label2id
+        }
+
+        with open(Path(output_dir) / 'label_metadata.json', 'w') as f:
+            json.dump(metadata, f, indent = 2)
+
+        ## log history
         self.training_log_history = trainer.state.log_history
+
 
     def generate_tags(self, card_text:str, threshold = 0.4, top_k:int = 5):
         """
@@ -245,7 +329,8 @@ class FineTuneLLM():
 
         Inputs
         ----------
-        card_text = The text data (as structured in scryfall_dataset.py)
+        card_text = The text data (as structured in scryfall_dataset.py) or as retrieved
+            from the OCR script
         threshold = Confidence per tag predicition required to output
         top_k = The number of tags we want to return, in order of confidence
 
@@ -295,7 +380,7 @@ class FineTuneLLM():
         model_inputs = The tokenized example
         """
         model_inputs = self.tokenizer(
-            example['document'],
+            example[TEXT_COLUMN],
             max_length = max_input_length,
             truncation = True,
             padding = False

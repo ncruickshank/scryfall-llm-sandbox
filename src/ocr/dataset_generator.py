@@ -100,7 +100,8 @@ class DoclingCardTextDatasetGenerator():
                 'oracle_id': record['oracle_id'],
                 'card_name': record['card_name'],
                 'card_text_ocr': gen_text,
-                'tags': record['tags']
+                'tags': record['tags'],
+                'split': record['split']
             }
 
             # store output

@@ -279,6 +279,70 @@ class ScryfallDataset():
 
         del output, dataset_dict
 
+    def load_hf_dataset_ocr(
+        self, 
+        filepath:str,
+        class_weight_clipping:tuple[float] = (1.0, 10.0),
+        verbose:bool = True
+    ):
+        """
+        Description
+        ----------
+        This method reads in the dataset as a HuggingFace dataset object, 
+        except we intend to source the data from the output of the 
+        scripts/generate_card_text_ocr_dataset.py file.
+
+        Inputs
+        ----------
+        filepath = The path to the card text and tags
+        class_weight_clipping = The values to clip our class weights between
+        verbose = If true, prints useful intermediates
+
+        Returns
+        ----------
+
+        """
+        all_tags = []
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+
+            # [if task == multi_label_classification] define additional objects
+            if self.task == 'multi_label_classification':
+                for card in data:
+                    ## extend the collection of tags
+                    all_tags.extend(card['tags']) # we will create labels as multi-hot vectors later
+
+        ## create label mapping objects
+        self.unique_tags = sorted(set(all_tags))
+        self.label2id = {tag: i for i, tag in enumerate(self.unique_tags)}
+        self.id2label = {i: tag for tag, i in self.label2id.items()}
+
+        # split data into train test val
+        datasets = {}
+        datasets['train'] = [c for c in data if c['split'] == 'train']
+        datasets['val'] = [c for c in data if c['split'] == 'val']
+        datasets['test'] = [c for c in data if c['split'] == 'test']
+
+        # store the output as a huggingface dataset
+        dataset_dict = DatasetDict()
+        for name, data in datasets.items():
+            dataset_dict[name] = Dataset.from_list(data)
+        self.dataset = dataset_dict
+
+        ## compute class weights as needed
+        if self.task == 'multi_label_classification':
+            self._compute_class_weights(clip_vals = class_weight_clipping)
+
+        if verbose:
+            print(f'Scryfall OCR-To-Tag {self.task.replace("_", " ").title()} Dataset Loaded')
+            print(f'\tTrain Records = {self.dataset['train'].num_rows}')
+            print(f'\tVal Records = {self.dataset['val'].num_rows}')
+            print(f'\tTest Records = {self.dataset['test'].num_rows}')
+            if self.unique_tags is not None:
+                print(f'\tCount Unique Tags = {len(self.unique_tags)}')
+
+        del datasets, dataset_dict
+
     # === Internal Methods ===
 
     def _compute_class_weights(self, clip_vals):
