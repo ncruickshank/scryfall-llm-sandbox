@@ -1,4 +1,4 @@
-# scryfall-llm-sandbox
+# MtG: Scryfall Autotagger
 
 Experimental code for building a Magic: The Gathering card auto-tagger from Scryfall data and Scryfall Community tags.
 
